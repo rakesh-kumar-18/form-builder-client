@@ -74,7 +74,6 @@ const Signup = () => {
     return (
         <div className={styles.signupContainer}>
             <form className={styles.form} onSubmit={handleSubmit}>
-                <h2>Sign Up</h2>
                 <div className={styles.inputGroup}>
                     <label>Username</label>
                     <input
