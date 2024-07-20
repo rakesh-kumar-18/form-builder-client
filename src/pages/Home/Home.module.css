@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: #171923;
+    color: #ffffff;
+}
+
+.App {
+    text-align: center;
+}

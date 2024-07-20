@@ -1,0 +1,29 @@
+.collectResultsSection {
+    padding: 60px 20px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.collectResultsSection h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    margin-top: 6rem;
+}
+
+.collectResultsSection p {
+    font-size: 18px;
+    color: #a0aec0;
+    font-size: medium;
+    margin: 0;
+}
+
+.collectResultsSection > p:nth-child(3) {
+    font-weight: bold;
+}
+
+.collectResultsSection img {
+    height: auto;
+    border: 1px solid #ffffff29;
+    border-radius: 10px;
+    margin-top: 5rem;
+}

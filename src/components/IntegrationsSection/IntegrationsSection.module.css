@@ -1,0 +1,22 @@
+.integrationsSection {
+    margin-top: 8rem;
+}
+
+.integrationsSection h2 {
+    text-align: left;
+    font-size: 24px;
+    margin: 3rem 0 0.5rem 8rem;
+    color: #ffffffeb;
+}
+
+.integrationsSection p {
+    text-align: left;
+    margin: 0;
+    margin-left: 8rem;
+    color: #a0aec0;
+}
+
+.integrations {
+    display: flex;
+    justify-content: center;
+}

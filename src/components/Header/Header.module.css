@@ -1,0 +1,45 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 80px;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.left > span {
+    font-weight: bold;
+}
+
+.signin {
+    border: 1px solid #7ea6ff;
+    background: none;
+    padding: 8px 12px;
+    color: #7ea6ff;
+    border-radius: 6px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.signup {
+    background-color: #1a5fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.navLinks {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}

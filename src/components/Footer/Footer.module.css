@@ -1,0 +1,44 @@
+.footer {
+    padding: 40px 20px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    text-align: center;
+}
+
+.footerContent {
+    margin-bottom: 20px;
+}
+
+.footerContent p {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.ctaButton {
+    padding: 15px 30px;
+    background-color: #1a5fff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.ctaButton:hover {
+    background-color: #0055cc;
+}
+
+.footerLinks {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footerLinks a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footerLinks a:hover {
+    text-decoration: underline;
+}
