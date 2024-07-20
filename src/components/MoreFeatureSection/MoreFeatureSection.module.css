@@ -1,0 +1,68 @@
+.feature {
+    padding: 40px 20px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.featureContent {
+    margin-bottom: 20px;
+}
+
+.featureContent h2 {
+    font-size: x-large;
+    color: #ffffffeb;
+    margin-bottom: 0.5rem;
+}
+
+.featureContent p {
+    margin-bottom: 20px;
+    color: #718096;
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding: 3rem 10rem;
+}
+
+.gridItem {
+    background-color: #1a202c;
+    border-radius: 8px;
+    text-align: center;
+    height: 9rem;
+    padding: 10px;
+}
+
+.gridItem > h4 {
+    color: #ffffffeb;
+}
+
+.gridItem > p {
+    color: #718096;
+}
+
+.icon {
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.iconImage {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* .teams {
+    background: linear-gradient(180deg, #171923 0%, #1A202C 100%);
+    width: 100%;
+    margin: 0;
+} */
+
+.teams > h3 {
+    color: #ffffffeb;
+    margin-bottom: 3rem;
+}

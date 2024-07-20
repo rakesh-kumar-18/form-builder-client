@@ -1,23 +1,14 @@
-// import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import HeroSection from "../../components/HeroSection/HeroSection";
 import FeaturesSection from "../../components/FeaturesSection/FeaturesSection";
 import IntegrationsSection from "../../components/IntegrationsSection/IntegrationsSection";
 import CollectResultsSection from "../../components/CollectResultsSection/CollectResultsSection";
-import Footer from "../../components/Footer/Footer";
+import Company from "../../components/Company/Company";
 import styles from "./Home.module.css";
+import MoreFeatureSection from "../../components/MoreFeatureSection/MoreFeatureSection";
+import Footer from "../../components/Footer/Footer";
 
 function Home() {
-    // const navigate = useNavigate();
-
-    // const handleSignup = () => {
-    //     navigate("/signup");
-    // };
-
-    // const handleLogin = () => {
-    //     navigate("/login");
-    // };
-
     return (
         <div className={styles.app}>
             <Header />
@@ -25,6 +16,8 @@ function Home() {
             <FeaturesSection />
             <IntegrationsSection />
             <CollectResultsSection />
+            <MoreFeatureSection />
+            <Company />
             <Footer />
         </div>
     );

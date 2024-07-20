@@ -1,0 +1,79 @@
+.footer {
+    padding: 40px 20px;
+    background: linear-gradient(180deg, #171923 0%, #1a202c 100%);
+    color: #ffffffeb;
+    text-align: center;
+}
+
+.heroContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    height: 100vh;
+    position: relative;
+}
+
+.textContainer {
+    max-width: 600px;
+    z-index: 1;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.ctaButton {
+    background-color: #1a5fff;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.ctaButton:hover {
+    background-color: #2563eb;
+}
+
+.subText {
+    color: #a0aec0;
+    font-size: small;
+}
+
+.subText span {
+    font-weight: bold;
+}
+
+.leftShape {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: auto;
+}
+
+.rightShape {
+    position: absolute;
+    bottom: 16%;
+    right: 0;
+    height: auto;
+}
+
+.footerLinks {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footerLinks a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footerLinks a:hover {
+    text-decoration: underline;
+}
