@@ -2,6 +2,7 @@
     text-align: center;
     padding: 60px 20px;
     color: #ffffff;
+    margin-top: 4rem;
 }
 
 .heroContent {
@@ -33,7 +34,7 @@
     border-radius: 5px;
     cursor: pointer;
     margin-top: 1.5rem;
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
 }
 
 .ctaButton:hover {
@@ -42,4 +43,18 @@
 
 .heroImage {
     height: auto;
+}
+
+.leftShape {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-60%);
+}
+
+.rightShape {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-60%);
 }

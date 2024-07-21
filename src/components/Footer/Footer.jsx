@@ -1,4 +1,5 @@
 import styles from "./Footer.module.css";
+import { GrShare } from "react-icons/gr";
 
 const Footer = () => {
     return (
@@ -9,23 +10,27 @@ const Footer = () => {
                     <span role="img" aria-label="heart">
                         ❤️
                     </span>{" "}
-                    by{" "}
-                    <a href="https://cuvette.tech" className={styles.link}>
-                        @cuvette
-                    </a>
+                    by
+                    <div>
+                        <a href="https://cuvette.tech" className={styles.link}>
+                            @cuvette
+                        </a>
+                    </div>
                 </p>
             </div>
             <div className={styles.column}>
-                <h4>Product</h4>
                 <ul>
                     <li>
                         <a href="#">Status</a>
+                        <GrShare />
                     </li>
                     <li>
                         <a href="#">Documentation</a>
+                        <GrShare />
                     </li>
                     <li>
                         <a href="#">Roadmap</a>
+                        <GrShare />
                     </li>
                     <li>
                         <a href="#">Pricing</a>
@@ -33,19 +38,22 @@ const Footer = () => {
                 </ul>
             </div>
             <div className={styles.column}>
-                <h4>Community</h4>
                 <ul>
                     <li>
                         <a href="#">Discord</a>
+                        <GrShare />
                     </li>
                     <li>
                         <a href="#">GitHub repository</a>
+                        <GrShare />
                     </li>
                     <li>
                         <a href="#">Twitter</a>
+                        <GrShare />
                     </li>
                     <li>
                         <a href="#">LinkedIn</a>
+                        <GrShare />
                     </li>
                     <li>
                         <a href="#">OSS Friends</a>
@@ -53,7 +61,6 @@ const Footer = () => {
                 </ul>
             </div>
             <div className={styles.column}>
-                <h4>Company</h4>
                 <ul>
                     <li>
                         <a href="#">About</a>
