@@ -7,6 +7,8 @@ import { FormBuilderContextProvider } from "./contexts/FormBuilderContext.jsx";
 import Login from "./pages/Login/Login.jsx";
 import Signup from "./pages/Signup/Signup.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import Settings from "./pages/Settings/Settings.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
 
 const router = createBrowserRouter([
     {
@@ -23,7 +25,25 @@ const router = createBrowserRouter([
     },
     {
         path: "dashboard",
-        element: <Dashboard />,
+        element: (
+            <PrivateRoute>
+                <Dashboard />
+            </PrivateRoute>
+        ),
+        // children: [
+        //     {
+        //         path: "settings",
+        //         element: <Settings />,
+        //     },
+        // ],
+    },
+    {
+        path: "settings",
+        element: (
+            <PrivateRoute>
+                <Settings />
+            </PrivateRoute>
+        ),
     },
 ]);
 

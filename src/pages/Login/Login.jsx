@@ -50,17 +50,23 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
+            setLoading(true);
             try {
                 const { email, password } = formData;
-                await login({ email, password });
-                toast.success("Login successful");
-                navigate("/");
+                const response = await login({ email, password });
+                if (response.data) {
+                    toast.success("Login successful");
+                    navigate("/dashboard");
+                } else {
+                    toast.error("Login failed. Please check your credentials.");
+                }
             } catch (error) {
                 toast.error(error.response?.data?.message || "Login failed");
-                console.log(error);
+                console.log("Login error:", error);
+            } finally {
+                setLoading(false);
             }
         }
-        setLoading(false);
     };
 
     return (
@@ -132,7 +138,7 @@ const Login = () => {
                         className={styles.loginButton}
                         disabled={loading}
                     >
-                        Log In
+                        {loading ? "Logging in..." : "Log In"}
                     </button>
                 </form>
                 <p>

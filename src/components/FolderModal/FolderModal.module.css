@@ -1,0 +1,61 @@
+.modalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background: #222;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.modal h2 {
+    margin-bottom: 20px;
+}
+
+.modal input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.saveButton,
+.cancelButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.saveButton {
+    background-color: #1a5fff;
+    color: #fff;
+}
+
+.saveButton:hover {
+    background-color: #0055cc;
+}
+
+.cancelButton {
+    background-color: #ff4c4c;
+    color: #fff;
+}
+
+.cancelButton:hover {
+    background-color: #ff1a1a;
+}

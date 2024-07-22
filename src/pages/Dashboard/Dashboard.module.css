@@ -1,0 +1,53 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffffeb;
+    background-color: #121212;
+}
+
+.content {
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+}
+
+.createButton {
+    padding: 10px 20px;
+    background-color: #1a5fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.createButton:hover {
+    background-color: #0055cc;
+}
+
+.folders {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.folder {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 200px;
+}
+
+.deleteButton {
+    background: none;
+    border: none;
+    color: #ff4c4c;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    color: #ff1a1a;
+}

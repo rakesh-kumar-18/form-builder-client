@@ -1,0 +1,58 @@
+.navbarContainer {
+    position: relative;
+    border-bottom: 1px solid #ffffff29;
+    width: 100%;
+}
+
+.navbar {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.workspace {
+    cursor: pointer;
+    border: 1px solid #ffffff29;
+    padding: 5px 14px;
+    width: fit-content;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffffeb;
+    border-radius: 8px;
+}
+
+.dropdown {
+    position: absolute;
+    top: 42px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1d1d1d;
+    border-radius: 8px;
+    z-index: 1000;
+    border: 1px solid #ffffff29;
+}
+
+.dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown li {
+    cursor: pointer;
+    margin: 0;
+    padding: 5px 14px;
+}
+
+.dropdown li:nth-child(1) {
+    border-bottom: 1px solid #ffffff29;
+}
+
+.dropdown li:nth-child(2) {
+    color: #ffa54c;
+}
+
+.dropdown li:hover {
+    background: #333;
+}

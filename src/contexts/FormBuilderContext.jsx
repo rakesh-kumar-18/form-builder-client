@@ -12,6 +12,7 @@ export const FormBuilderContext = createContext();
 const FormBuilderContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [username, setUsername] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchUser();
@@ -28,9 +29,13 @@ const FormBuilderContextProvider = ({ children }) => {
     const fetchUser = async () => {
         try {
             const response = await getCurrentUser();
-            setUser(response.data);
+            if (response && response.data) {
+                setUser(response.data);
+            }
         } catch (error) {
-            console.log(error);
+            console.log("Error fetching user:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -54,11 +59,17 @@ const FormBuilderContextProvider = ({ children }) => {
     };
 
     const login = async (userData) => {
+        setLoading(true);
         try {
             const response = await loginUser(userData);
-            setUser(response.data);
+            if (response && response.data) {
+                setUser(response.data);
+            }
+            setLoading(false);
+            return response;
         } catch (error) {
             console.error("Failed to login:", error);
+            setLoading(false);
             throw error;
         }
     };
@@ -74,6 +85,7 @@ const FormBuilderContextProvider = ({ children }) => {
                 logout,
                 register,
                 login,
+                loading,
             }}
         >
             {children}

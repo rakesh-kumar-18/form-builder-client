@@ -1,0 +1,43 @@
+.settings {
+    padding: 20px;
+    background: #121212;
+    color: #fff;
+    border-radius: 5px;
+    width: 400px;
+    margin: 20px auto;
+}
+
+.settings h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.inputGroup {
+    margin-bottom: 20px;
+}
+
+.inputGroup label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.inputGroup input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.updateButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1a5fff;
+    color: #fff;
+    cursor: pointer;
+    width: 100%;
+}
+
+.updateButton:hover {
+    background-color: #0055cc;
+}
