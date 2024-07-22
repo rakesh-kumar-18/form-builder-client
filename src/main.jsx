@@ -30,12 +30,6 @@ const router = createBrowserRouter([
                 <Dashboard />
             </PrivateRoute>
         ),
-        // children: [
-        //     {
-        //         path: "settings",
-        //         element: <Settings />,
-        //     },
-        // ],
     },
     {
         path: "settings",
