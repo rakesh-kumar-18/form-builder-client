@@ -11,8 +11,11 @@ import { CiCalendarDate } from "react-icons/ci";
 import { CiStar } from "react-icons/ci";
 import { LuCheckSquare } from "react-icons/lu";
 import { RxCross1 } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
 
 const CreateTypeBotPage = () => {
+    const navigate = useNavigate();
+
     return (
         <div className={styles.createTypeBotPage}>
             <div className={styles.navbar}>
@@ -37,56 +40,62 @@ const CreateTypeBotPage = () => {
                             fontSize: "large",
                             cursor: "pointer",
                         }}
+                        onClick={() => navigate("/dashboard")}
                     />
                 </div>
             </div>
             <div className={styles.content}>
-                <div className={styles.bubbles}>
+                <div className={styles.sidebar}>
+                    <h5>Bubbles</h5>
                     <div className={styles.bubbleGroup}>
                         <button className={styles.bubble}>
-                            <MdOutlineTextsms />
+                            <MdOutlineTextsms className={styles.bubbleIcon} />
                             Text
                         </button>
                         <button className={styles.bubble}>
-                            <CiImageOn />
+                            <CiImageOn className={styles.bubbleIcon} />
                             Image
                         </button>
                         <button className={styles.bubble}>
-                            <TbMovie />
+                            <TbMovie className={styles.bubbleIcon} />
                             Video
                         </button>
                         <button className={styles.bubble}>
-                            <MdGif />
+                            <MdGif
+                                className={styles.bubbleIcon}
+                                style={{ fontSize: "x-large" }}
+                            />
                             GIF
                         </button>
                     </div>
+                    <h5>Inputs</h5>
                     <div className={styles.inputGroup}>
                         <button className={styles.input}>
-                            <RxText />
+                            <RxText className={styles.inputIcon} />
                             Text
                         </button>
                         <button className={styles.input}>
-                            <FaHashtag />
+                            <FaHashtag className={styles.inputIcon} />
                             Number
                         </button>
                         <button className={styles.input}>
-                            <FiAtSign />
+                            <FiAtSign className={styles.inputIcon} />
                             Email
                         </button>
                         <button className={styles.input}>
-                            <FiPhone />
+                            <FiPhone className={styles.inputIcon} />
                             Phone
                         </button>
                         <button className={styles.input}>
-                            <CiCalendarDate />
+                            <CiCalendarDate className={styles.inputIcon} />
                             Date
                         </button>
                         <button className={styles.input}>
-                            <CiStar />
+                            <CiStar className={styles.inputIcon} />
                             Rating
                         </button>
                         <button className={styles.input}>
-                            <LuCheckSquare />
+                            <LuCheckSquare className={styles.inputIcon} />
                             Buttons
                         </button>
                     </div>

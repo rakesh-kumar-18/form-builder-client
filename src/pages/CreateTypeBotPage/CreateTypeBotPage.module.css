@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     color: #ffffff;
+    height: 100vh;
+    background-color: #1f1f23;
 }
 
 .navbar {
@@ -9,9 +11,9 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #ffffff29;
-    margin-bottom: 1rem;
     width: calc(100% - 40px);
     padding: 14px 20px;
+    background-color: #18181b;
 }
 
 .formNameInput {
@@ -19,7 +21,6 @@
     padding: 4px 10px;
     border: none;
     border-radius: 5px;
-    font-size: large;
     background-color: #37373e;
 }
 
@@ -45,35 +46,61 @@
 
 .content {
     display: flex;
-    justify-content: space-between;
+    height: calc(100% - 60px);
 }
 
-.bubbles,
-.inputGroup {
-    display: flex;
-    flex-direction: column;
+.sidebar {
+    display: grid;
+    grid-template-rows: auto auto auto auto 1fr;
+    gap: 10px;
+    padding: 14px;
+    background-color: #18181b;
+    width: 300px;
+    overflow-y: auto;
+    border: 1px solid #ffffff29;
+    margin: 16px;
+    border-radius: 5px;
+}
+
+.sidebar h5 {
+    margin: 0;
+    padding: 0 0 10px 0;
 }
 
 .bubbleGroup,
 .inputGroup {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    margin-bottom: 10px;
 }
 
 .bubble,
 .input {
     padding: 10px 20px;
-    background-color: #333;
+    background-color: #1f1f23;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     color: #ffffff;
     text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #27272a;
+}
+
+.bubbleIcon {
+    color: #4b83ff;
+    font-size: large;
+}
+
+.inputIcon {
+    color: #ffa54c;
+    font-size: medium;
 }
 
 .workspace {
-    background-color: #1d1d1d;
     flex-grow: 1;
     margin-left: 20px;
     padding: 20px;
@@ -81,6 +108,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #1f1f23;
 }
 
 .startBubble {
