@@ -14,3 +14,5 @@ export const loginUser = (userData) =>
 export const logoutUser = () => axiosInstance.post(`${API_URL}/logout`);
 export const getCurrentUser = () =>
     axiosInstance.get(`${API_URL}/current-user`);
+export const updateUserDetails = (userData) =>
+    axiosInstance.put(`${API_URL}/update`, userData);

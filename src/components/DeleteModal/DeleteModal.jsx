@@ -13,6 +13,7 @@ const DeleteModal = ({ onClose, onConfirm }) => {
                     >
                         Confirm
                     </button>
+                    <div className={styles.verticalLine}></div>
                     <button className={styles.cancelButton} onClick={onClose}>
                         Cancel
                     </button>

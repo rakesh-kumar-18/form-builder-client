@@ -5,6 +5,7 @@ import {
     logoutUser,
     registerUser,
     loginUser,
+    updateUserDetails,
 } from "../api/userApi";
 
 export const FormBuilderContext = createContext();
@@ -74,6 +75,22 @@ const FormBuilderContextProvider = ({ children }) => {
         }
     };
 
+    const updateUser = async (userData) => {
+        setLoading(true);
+        try {
+            const response = await updateUserDetails(userData);
+            if (response && response.data) {
+                setUser(response.data);
+            }
+            setLoading(false);
+            return response;
+        } catch (error) {
+            console.error("Failed to update user:", error);
+            setLoading(false);
+            throw error;
+        }
+    };
+
     return (
         <FormBuilderContext.Provider
             value={{
@@ -85,6 +102,7 @@ const FormBuilderContextProvider = ({ children }) => {
                 logout,
                 register,
                 login,
+                updateUser,
                 loading,
             }}
         >

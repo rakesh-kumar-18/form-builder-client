@@ -25,6 +25,7 @@ const FolderModal = ({ onClose, onSave }) => {
                     <button className={styles.saveButton} onClick={handleSave}>
                         Done
                     </button>
+                    <div className={styles.verticalLine}></div>
                     <button className={styles.cancelButton} onClick={onClose}>
                         Cancel
                     </button>

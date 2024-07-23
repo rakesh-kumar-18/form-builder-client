@@ -1,36 +1,17 @@
-.container {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #121212;
-    color: #fff;
-}
-
 .settings {
-    padding: 20px;
-    background: #1e1e1e;
-    color: #fff;
-    border-radius: 5px;
+    padding: 10px;
     width: 400px;
     margin: 20px auto;
 }
 
 .settings h3 {
-    margin-bottom: 20px;
+    margin-bottom: 3rem;
     text-align: center;
 }
 
 .inputGroup {
     position: relative;
     margin-bottom: 20px;
-}
-
-.inputGroup label {
-    display: block;
-    margin-bottom: 5px;
 }
 
 .icon {
@@ -44,31 +25,28 @@
 .eyeIcon {
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: 15px;
     transform: translateY(-50%);
     color: #aaa;
     cursor: pointer;
 }
 
 .inputGroup input {
-    width: 100%;
-    padding: 10px 40px;
-    /* add padding for the icon */
-    border: 1px solid #D0D0D0;
-    border-radius: 5px;
-    background-color: #333;
-    color: #fff;
+    width: calc(100% - 82px);
+    padding: 12px 40px;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
     outline: none;
 }
 
 .updateButton {
-    padding: 10px 20px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 5px;
-    background-color: #1A5FFF;
-    color: #fff;
+    border-radius: 50px;
+    background-color: #1a5fff;
     cursor: pointer;
     width: 100%;
+    margin-top: 10px;
 }
 
 .updateButton:hover {
@@ -77,8 +55,8 @@
 
 .logout {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 3rem;
+    left: 3rem;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -86,5 +64,6 @@
 }
 
 .logoutIcon {
-    margin-right: 5px;
+    margin-right: 10px;
+    font-size: x-large;
 }
