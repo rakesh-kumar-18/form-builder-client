@@ -40,6 +40,7 @@
     align-items: center;
     font-size: medium;
     margin-top: 1rem;
+    cursor: pointer;
 }
 
 .folders {

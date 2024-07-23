@@ -6,12 +6,14 @@ import NavbarWithDropdown from "../../components/NavbarWithDropdown/NavbarWithDr
 import { PiFolderSimplePlusBold } from "react-icons/pi";
 import { FiPlus } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
     const [folders, setFolders] = useState([]);
     const [isFolderModalOpen, setFolderModalOpen] = useState(false);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedFolder, setSelectedFolder] = useState(null);
+    const navigate = useNavigate();
 
     const handleCreateFolder = (folderName) => {
         setFolders([...folders, { name: folderName }]);
@@ -24,8 +26,7 @@ const Dashboard = () => {
     };
 
     const handleCreateBot = () => {
-        // Add your logic to handle creating a bot
-        console.log("Create a typebot clicked");
+        navigate("/create-typebot");
     };
 
     return (

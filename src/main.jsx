@@ -9,6 +9,7 @@ import Signup from "./pages/Signup/Signup.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Settings from "./pages/Settings/Settings.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
+import CreateTypeBotPage from "./pages/CreateTypeBotPage/CreateTypeBotPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
                 <Settings />
             </PrivateRoute>
         ),
+    },
+    {
+        path: "create-typebot",
+        element: <CreateTypeBotPage />,
     },
 ]);
 
