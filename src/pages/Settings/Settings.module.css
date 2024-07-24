@@ -67,3 +67,8 @@
     margin-right: 10px;
     font-size: x-large;
 }
+
+.error {
+    color: #ff0e0e;
+    font-size: small;
+}

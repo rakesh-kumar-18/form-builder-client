@@ -10,6 +10,8 @@ import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Settings from "./pages/Settings/Settings.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import CreateTypeBotPage from "./pages/CreateTypeBotPage/CreateTypeBotPage.jsx";
+import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
     {
@@ -54,6 +56,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <FormBuilderContextProvider>
             <RouterProvider router={router} />
+            <ToastContainer />
         </FormBuilderContextProvider>
     </React.StrictMode>
 );

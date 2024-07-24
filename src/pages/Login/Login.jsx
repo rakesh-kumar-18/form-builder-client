@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import styles from "./Login.module.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validateEmail } from "../../utils/validation";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
@@ -61,8 +61,8 @@ const Login = () => {
                     toast.error("Login failed. Please check your credentials.");
                 }
             } catch (error) {
-                toast.error(error.response?.data?.message || "Login failed");
                 console.log("Login error:", error);
+                toast.error(error.response?.data?.message || "Login failed");
             } finally {
                 setLoading(false);
             }
@@ -146,7 +146,6 @@ const Login = () => {
                     <Link to="/signup">Register now</Link>
                 </p>
             </div>
-            <ToastContainer />
         </div>
     );
 };

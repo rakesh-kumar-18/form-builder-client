@@ -6,7 +6,8 @@ import { HiOutlineLogout } from "react-icons/hi";
 import { MdOutlineEmail } from "react-icons/md";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import Loader from "../../components/Loader/Loader";
 
 const Settings = () => {
     const { logout, updateUser, user, loading } =
@@ -17,14 +18,16 @@ const Settings = () => {
         oldPassword: "",
         newPassword: "",
     });
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
         if (user) {
             setFormData({
-                ...formData,
-                username: user.username,
-                email: user.email,
+                username: user.data.username || "",
+                email: user.data.email || "",
+                oldPassword: "",
+                newPassword: "",
             });
         }
     }, [user]);
@@ -49,14 +52,35 @@ const Settings = () => {
         });
     };
 
+    const validateForm = () => {
+        let formErrors = {};
+
+        if (!formData.username || !formData.email) {
+            formErrors.general = "Username and email are required.";
+        } else if (
+            formData.username === user.data.username &&
+            formData.email === user.data.email
+        ) {
+            formErrors.general =
+                "You must change at least one of the username or email.";
+        }
+
+        setErrors(formErrors);
+        return Object.keys(formErrors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            await updateUser(formData);
-            toast.success("Profile updated successfully");
-        } catch (error) {
-            console.error("Failed to update profile:", error);
-            toast.error("Failed to update profile");
+        if (validateForm()) {
+            try {
+                await updateUser(formData);
+                toast.success("Profile updated successfully");
+            } catch (error) {
+                console.error("Failed to update profile:", error);
+                toast.error(
+                    error.response?.data?.message || "Failed to update profile"
+                );
+            }
         }
     };
 
@@ -64,6 +88,10 @@ const Settings = () => {
         await logout();
         navigate("/login");
     };
+
+    if (loading) {
+        return <Loader />;
+    }
 
     return (
         <div className={styles.container}>
@@ -138,6 +166,9 @@ const Settings = () => {
                             )}
                         </span>
                     </div>
+                    {errors.general && (
+                        <p className={styles.error}>{errors.general}</p>
+                    )}
                     <button
                         type="submit"
                         className={styles.updateButton}
@@ -151,7 +182,6 @@ const Settings = () => {
                 <HiOutlineLogout className={styles.logoutIcon} />
                 <span>Log out</span>
             </div>
-            <ToastContainer />
         </div>
     );
 };
