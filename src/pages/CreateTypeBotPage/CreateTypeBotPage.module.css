@@ -106,15 +106,23 @@
     padding: 20px;
     border-radius: 5px;
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     background-color: #1f1f23;
 }
 
 .startBubble {
-    padding: 10px 20px;
-    background-color: #333;
-    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    background-color: #18181b;
+    border-radius: 16px;
+    width: 15rem;
+    margin-top: 3rem;
+}
+
+.startBubble h4 {
+    margin: 0;
 }
 
 .actions {
@@ -146,7 +154,7 @@
 }
 
 .themeSidebar {
-    /* padding: 14px; */
+    padding: 14px;
     background-color: #18181b;
     width: 300px;
     border-right: 1px solid #ffffff29;
@@ -155,19 +163,20 @@
     align-items: center;
 }
 
-.themeSidebar h5 {
+.themeSidebar h3 {
     text-align: center;
     margin-bottom: 3rem;
+    padding-bottom: 2rem;
     position: relative;
+    width: 100%;
 }
 
-.themeSidebar h5::after {
+.themeSidebar h3::after {
     content: "";
     position: absolute;
-    bottom: -1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 212%;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     height: 1px;
     background-color: #ffffff29;
 }
@@ -176,7 +185,7 @@
     border: 1px solid transparent;
     border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     width: 80%;
 }
 

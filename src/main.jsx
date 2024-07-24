@@ -42,7 +42,11 @@ const router = createBrowserRouter([
     },
     {
         path: "create-typebot",
-        element: <CreateTypeBotPage />,
+        element: (
+            <PrivateRoute>
+                <CreateTypeBotPage />
+            </PrivateRoute>
+        ),
     },
 ]);
 

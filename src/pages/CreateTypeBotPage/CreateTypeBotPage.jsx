@@ -18,6 +18,7 @@ import light from "../../assets/theme-light.png";
 import tailblue from "../../assets/theme-tail-blue.png";
 import profileImage from "../../assets/profile.png";
 import dot from "../../assets/dot.png";
+import { AiFillFlag } from "react-icons/ai";
 
 const CreateTypeBotPage = () => {
     const navigate = useNavigate();
@@ -142,14 +143,22 @@ const CreateTypeBotPage = () => {
                         </div>
                     </div>
                     <div className={styles.workspace}>
-                        <div className={styles.startBubble}>Start</div>
+                        <div className={styles.startBubble}>
+                            <AiFillFlag
+                                style={{
+                                    marginRight: "7px",
+                                    fontSize: "larger",
+                                }}
+                            />
+                            <h4>Start</h4>
+                        </div>
                     </div>
                 </div>
             )}
             {activeTab === "theme" && (
                 <div className={styles.themeContent}>
                     <div className={styles.themeSidebar}>
-                        <h5>Customize the theme</h5>
+                        <h3>Customize the theme</h3>
                         {themes.map((theme) => (
                             <div
                                 key={theme.id}
