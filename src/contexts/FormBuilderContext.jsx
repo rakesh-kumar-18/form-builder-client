@@ -225,6 +225,7 @@ const FormBuilderContextProvider = ({ children }) => {
                 folders,
                 handleCreateFolder,
                 handleDeleteFolder,
+                fetchUserFolders,
                 typeBots,
                 handleCreateTypeBot,
                 handleDeleteTypeBot,

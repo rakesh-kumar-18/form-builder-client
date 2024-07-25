@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styles from "./CreateTypeBotPage.module.css";
 import { MdOutlineTextsms } from "react-icons/md";
 import { CiImageOn } from "react-icons/ci";
@@ -19,11 +19,15 @@ import tailblue from "../../assets/theme-tail-blue.png";
 import profileImage from "../../assets/profile.png";
 import dot from "../../assets/dot.png";
 import { AiFillFlag } from "react-icons/ai";
+import { FormBuilderContext } from "../../contexts/FormBuilderContext";
 
 const CreateTypeBotPage = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("flow");
     const [selectedTheme, setSelectedTheme] = useState("light");
+    const [formName, setFormName] = useState("");
+
+    const { handleCreateTypeBot } = useContext(FormBuilderContext);
 
     const themes = [
         { id: "light", name: "Light", image: `${light}` },
@@ -35,6 +39,16 @@ const CreateTypeBotPage = () => {
         setSelectedTheme(themeId);
     };
 
+    const saveTypeBot = () => {
+        const typeBotData = {
+            name: formName,
+            flow: [], // Placeholder for the actual flow data
+            theme: selectedTheme,
+        };
+        handleCreateTypeBot(typeBotData);
+        navigate("/dashboard");
+    };
+
     return (
         <div className={styles.createTypeBotPage}>
             <div className={styles.navbar}>
@@ -43,6 +57,8 @@ const CreateTypeBotPage = () => {
                         type="text"
                         placeholder="Enter Form Name"
                         className={styles.formNameInput}
+                        value={formName}
+                        onChange={(e) => setFormName(e.target.value)}
                     />
                 ) : (
                     <div style={{ width: "180px" }}></div>
@@ -75,7 +91,9 @@ const CreateTypeBotPage = () => {
                 </div>
                 <div className={styles.actions}>
                     <button className={styles.shareButton}>Share</button>
-                    <button className={styles.saveButton}>Save</button>
+                    <button className={styles.saveButton} onClick={saveTypeBot}>
+                        Save
+                    </button>
                     <RxCross1
                         style={{
                             color: "#F55050",

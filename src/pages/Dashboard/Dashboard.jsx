@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import styles from "./Dashboard.module.css";
 import FolderModal from "../../components/FolderModal/FolderModal";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
@@ -7,25 +7,36 @@ import { PiFolderSimplePlusBold } from "react-icons/pi";
 import { FiPlus } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import { FormBuilderContext } from "../../contexts/FormBuilderContext";
 
 const Dashboard = () => {
-    const [folders, setFolders] = useState([]);
     const [isFolderModalOpen, setFolderModalOpen] = useState(false);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedFolder, setSelectedFolder] = useState(null);
     const navigate = useNavigate();
 
-    const handleCreateFolder = (folderName) => {
-        setFolders([...folders, { name: folderName }]);
+    const {
+        folders,
+        handleCreateFolder,
+        handleDeleteFolder,
+        fetchUserFolders,
+    } = useContext(FormBuilderContext);
+
+    useEffect(() => {
+        fetchUserFolders();
+    }, []);
+
+    const createFolder = (folderName) => {
+        handleCreateFolder({ name: folderName });
         setFolderModalOpen(false);
     };
 
-    const handleDeleteFolder = () => {
-        setFolders(folders.filter((folder) => folder !== selectedFolder));
+    const deleteFolder = () => {
+        handleDeleteFolder(selectedFolder._id);
         setDeleteModalOpen(false);
     };
 
-    const handleCreateBot = () => {
+    const createTypeBot = () => {
         navigate("/create-typebot");
     };
 
@@ -60,7 +71,7 @@ const Dashboard = () => {
                 </div>
                 <button
                     className={styles.typebotButton}
-                    onClick={handleCreateBot}
+                    onClick={createTypeBot}
                 >
                     <FiPlus
                         style={{ fontSize: "xx-large", marginBottom: "2rem" }}
@@ -71,13 +82,13 @@ const Dashboard = () => {
             {isFolderModalOpen && (
                 <FolderModal
                     onClose={() => setFolderModalOpen(false)}
-                    onSave={handleCreateFolder}
+                    onSave={createFolder}
                 />
             )}
             {isDeleteModalOpen && (
                 <DeleteModal
                     onClose={() => setDeleteModalOpen(false)}
-                    onConfirm={handleDeleteFolder}
+                    onConfirm={deleteFolder}
                 />
             )}
         </div>
