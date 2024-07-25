@@ -106,8 +106,9 @@
     padding: 20px;
     border-radius: 5px;
     display: flex;
-    align-items: start;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
     background-color: #1f1f23;
 }
 
@@ -119,6 +120,7 @@
     border-radius: 16px;
     width: 15rem;
     margin-top: 3rem;
+    margin-bottom: 2rem;
 }
 
 .startBubble h4 {
@@ -146,6 +148,74 @@
 
 .saveButton {
     background-color: #4ade80cc;
+}
+
+.flowItem {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: #18181b;
+    border-radius: 16px;
+    width: 15rem;
+    margin-bottom: 2rem;
+}
+
+.flowDetails h4 {
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+.flowIcon {
+    margin-right: 0.5rem;
+}
+
+.inputContainer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    background-color: #1f1f23;
+    border: 1px solid #27272a;
+    border-radius: 5px;
+    width: calc(15rem - 10px);
+}
+
+.inputContainer span {
+    color: #1a5fff;
+    font-size: larger;
+    display: flex;
+}
+
+.errorInput {
+    border-color: #f55050;
+}
+
+.flowInput {
+    flex: 1;
+    padding: 0.5rem;
+    background-color: #1f1f23;
+    border: none;
+    color: #ffffff;
+}
+
+.errorText {
+    color: #522224;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.deleteIcon {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    cursor: pointer;
+    color: #f82b60;
+    margin-left: 0.5rem;
+    background-color: #444444;
+    padding: 5px;
+    border-radius: 30px;
+    font-size: larger;
 }
 
 .themeContent {
