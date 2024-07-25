@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import styles from "./Signup.module.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
     validatePassword,
@@ -204,7 +204,6 @@ const Signup = () => {
                     Already have an account? <Link to="/login">Login</Link>
                 </p>
             </div>
-            <ToastContainer />
         </div>
     );
 };
