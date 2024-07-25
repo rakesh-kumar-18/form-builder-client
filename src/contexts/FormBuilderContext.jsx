@@ -7,6 +7,19 @@ import {
     loginUser,
     updateUserDetails,
 } from "../api/userApi";
+import { createFolder, deleteFolder, getUserFolders } from "../api/folderApi";
+import {
+    createTypeBot,
+    deleteTypeBot,
+    getUserTypeBots,
+    getTypeBotsByFolder,
+} from "../api/typeBotApi";
+import {
+    addResponse,
+    getResponses,
+    incrementViewCount,
+    incrementStartCount,
+} from "../api/responseApi";
 
 export const FormBuilderContext = createContext();
 
@@ -15,6 +28,10 @@ const FormBuilderContextProvider = ({ children }) => {
     const [username, setUsername] = useState("");
     const [loading, setLoading] = useState(true);
 
+    const [folders, setFolders] = useState([]);
+    const [typeBots, setTypeBots] = useState([]);
+    const [responses, setResponses] = useState([]);
+
     useEffect(() => {
         fetchUser();
     }, [username]);
@@ -22,8 +39,12 @@ const FormBuilderContextProvider = ({ children }) => {
     useEffect(() => {
         if (user) {
             setUsername(user.data.username);
+            fetchUserFolders();
+            fetchUserTypeBots();
         } else {
             setUsername("");
+            setFolders([]);
+            setTypeBots([]);
         }
     }, [user]);
 
@@ -91,6 +112,103 @@ const FormBuilderContextProvider = ({ children }) => {
         }
     };
 
+    const fetchUserFolders = async () => {
+        try {
+            const response = await getUserFolders();
+            setFolders(response.data);
+        } catch (error) {
+            console.error("Error fetching folders:", error);
+        }
+    };
+
+    const handleCreateFolder = async (folderData) => {
+        try {
+            await createFolder(folderData);
+            fetchUserFolders();
+        } catch (error) {
+            console.error("Error creating folder:", error);
+        }
+    };
+
+    const handleDeleteFolder = async (folderId) => {
+        try {
+            await deleteFolder(folderId);
+            fetchUserFolders();
+        } catch (error) {
+            console.error("Error deleting folder:", error);
+        }
+    };
+
+    const fetchUserTypeBots = async () => {
+        try {
+            const response = await getUserTypeBots();
+            setTypeBots(response.data);
+        } catch (error) {
+            console.error("Error fetching typebots:", error);
+        }
+    };
+
+    const handleCreateTypeBot = async (typeBotData) => {
+        try {
+            await createTypeBot(typeBotData);
+            fetchUserTypeBots();
+        } catch (error) {
+            console.error("Error creating typebot:", error);
+        }
+    };
+
+    const handleDeleteTypeBot = async (typeBotId) => {
+        try {
+            await deleteTypeBot(typeBotId);
+            fetchUserTypeBots();
+        } catch (error) {
+            console.error("Error deleting typebot:", error);
+        }
+    };
+
+    const handleGetTypeBotsByFolder = async (folderId) => {
+        try {
+            const response = await getTypeBotsByFolder(folderId);
+            setTypeBots(response.data);
+        } catch (error) {
+            console.error("Error fetching typebots by folder:", error);
+        }
+    };
+
+    const handleAddResponse = async (responseData) => {
+        try {
+            await addResponse(responseData);
+            fetchResponses(responseData.typeBotId);
+        } catch (error) {
+            console.error("Error adding response:", error);
+        }
+    };
+
+    const handleIncrementViewCount = async (typeBotId) => {
+        try {
+            await incrementViewCount(typeBotId);
+        } catch (error) {
+            console.error("Error incrementing view count:", error);
+        }
+    };
+
+    const handleIncrementStartCount = async (typeBotId) => {
+        try {
+            await incrementStartCount(typeBotId);
+        } catch (error) {
+            console.error("Error incrementing start count:", error);
+        }
+    };
+
+    const fetchResponses = async (typeBotId) => {
+        try {
+            const response = await getResponses(typeBotId);
+            setResponses(response.data.responses);
+        } catch (error) {
+            console.error("Error fetching responses:", error);
+        }
+    };
+
     return (
         <FormBuilderContext.Provider
             value={{
@@ -104,6 +222,17 @@ const FormBuilderContextProvider = ({ children }) => {
                 login,
                 updateUser,
                 loading,
+                folders,
+                handleCreateFolder,
+                handleDeleteFolder,
+                typeBots,
+                handleCreateTypeBot,
+                handleDeleteTypeBot,
+                handleGetTypeBotsByFolder,
+                responses,
+                handleAddResponse,
+                handleIncrementViewCount,
+                handleIncrementStartCount,
             }}
         >
             {children}
