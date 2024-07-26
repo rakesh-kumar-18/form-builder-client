@@ -8,6 +8,7 @@ import { FiPlus } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
+import { encrypt } from "../../utils/encryptionUtils";
 
 const Dashboard = () => {
     const [isFolderModalOpen, setFolderModalOpen] = useState(false);
@@ -51,7 +52,14 @@ const Dashboard = () => {
     };
 
     const createTypeBot = () => {
-        navigate("/create-typebot");
+        if (selectedFolder) {
+            const encryptedFolderId = encrypt(selectedFolder._id);
+            navigate(
+                `/create-typebot?folderId=${encodeURIComponent(encryptedFolderId)}`
+            );
+        } else {
+            navigate("/create-typebot");
+        }
     };
 
     return (

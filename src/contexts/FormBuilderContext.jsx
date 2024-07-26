@@ -147,11 +147,12 @@ const FormBuilderContextProvider = ({ children }) => {
             try {
                 await deleteFolder(folderId);
                 fetchUserFolders();
+                fetchUserTypeBots();
             } catch (error) {
                 console.error("Error deleting folder:", error);
             }
         },
-        [fetchUserFolders]
+        [fetchUserFolders, fetchUserTypeBots]
     );
 
     const handleCreateTypeBot = useCallback(

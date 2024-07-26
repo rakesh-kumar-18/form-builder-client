@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./CreateTypeBotPage.module.css";
 import { toast } from "react-toastify";
 import { MdOutlineTextsms } from "react-icons/md";
@@ -15,24 +16,37 @@ import { LuCheckSquare } from "react-icons/lu";
 import { RxCross1 } from "react-icons/rx";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiFillFlag } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
 import dark from "../../assets/theme-dark.png";
 import light from "../../assets/theme-light.png";
 import tailblue from "../../assets/theme-tail-blue.png";
 import profileImage from "../../assets/profile.png";
 import dot from "../../assets/dot.png";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
+import { decrypt } from "../../utils/encryptionUtils"; // Import the decryption utility
 
 const CreateTypeBotPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [activeTab, setActiveTab] = useState("flow");
     const [selectedTheme, setSelectedTheme] = useState("light");
     const [formName, setFormName] = useState("");
     const [flowItems, setFlowItems] = useState([]);
     const [errors, setErrors] = useState({});
     const [formNameError, setFormNameError] = useState("");
+    const [folderId, setFolderId] = useState(null);
 
     const { handleCreateTypeBot } = useContext(FormBuilderContext);
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const encryptedFolderId = queryParams.get("folderId");
+        if (encryptedFolderId) {
+            const decryptedFolderId = decrypt(
+                decodeURIComponent(encryptedFolderId)
+            );
+            setFolderId(decryptedFolderId);
+        }
+    }, [location]);
 
     const themes = [
         { id: "light", name: "Light", image: `${light}` },
@@ -67,6 +81,7 @@ const CreateTypeBotPage = () => {
             name: formName,
             flow: flowItems,
             theme: selectedTheme,
+            folderId,
         };
         handleCreateTypeBot(typeBotData);
         navigate("/dashboard");
