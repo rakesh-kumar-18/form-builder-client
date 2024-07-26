@@ -13,6 +13,7 @@ const Dashboard = () => {
     const [isFolderModalOpen, setFolderModalOpen] = useState(false);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedFolder, setSelectedFolder] = useState(null);
+    const [deletedFolder, setDeletedFolder] = useState(null);
     const navigate = useNavigate();
 
     const {
@@ -20,11 +21,23 @@ const Dashboard = () => {
         handleCreateFolder,
         handleDeleteFolder,
         fetchUserFolders,
+        typeBots,
+        fetchUserTypeBots,
+        handleGetTypeBotsByFolder,
+        handleDeleteTypeBot,
     } = useContext(FormBuilderContext);
 
     useEffect(() => {
         fetchUserFolders();
-    }, []);
+    }, [fetchUserFolders]);
+
+    useEffect(() => {
+        if (selectedFolder) {
+            handleGetTypeBotsByFolder(selectedFolder._id);
+        } else {
+            fetchUserTypeBots();
+        }
+    }, [selectedFolder, handleGetTypeBotsByFolder, fetchUserTypeBots]);
 
     const createFolder = (folderName) => {
         handleCreateFolder({ name: folderName });
@@ -32,8 +45,9 @@ const Dashboard = () => {
     };
 
     const deleteFolder = () => {
-        handleDeleteFolder(selectedFolder._id);
+        handleDeleteFolder(deletedFolder._id);
         setDeleteModalOpen(false);
+        setDeletedFolder(null);
     };
 
     const createTypeBot = () => {
@@ -56,12 +70,17 @@ const Dashboard = () => {
                     </button>
                     <div className={styles.folders}>
                         {folders.map((folder, index) => (
-                            <div key={index} className={styles.folder}>
+                            <div
+                                key={index}
+                                className={`${styles.folder} ${selectedFolder && selectedFolder._id === folder._id ? styles.activeFolder : ""}`}
+                                onClick={() => setSelectedFolder(folder)}
+                            >
                                 <span>{folder.name}</span>
                                 <RiDeleteBin6Line
                                     className={styles.deleteButton}
-                                    onClick={() => {
-                                        setSelectedFolder(folder);
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setDeletedFolder(folder);
                                         setDeleteModalOpen(true);
                                     }}
                                 />
@@ -69,15 +88,29 @@ const Dashboard = () => {
                         ))}
                     </div>
                 </div>
-                <button
-                    className={styles.typebotButton}
-                    onClick={createTypeBot}
-                >
-                    <FiPlus
-                        style={{ fontSize: "xx-large", marginBottom: "2rem" }}
-                    />
-                    Create a typebot
-                </button>
+                <div className={styles.typebotContainer}>
+                    <button
+                        className={styles.typebotButton}
+                        onClick={createTypeBot}
+                    >
+                        <FiPlus
+                            style={{
+                                fontSize: "xx-large",
+                                marginBottom: "2rem",
+                            }}
+                        />
+                        Create a typebot
+                    </button>
+                    {typeBots.map((typebot, index) => (
+                        <div key={index} className={styles.typebot}>
+                            <span>{typebot.name}</span>
+                            <RiDeleteBin6Line
+                                className={styles.deleteButton}
+                                onClick={() => handleDeleteTypeBot(typebot._id)}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
             {isFolderModalOpen && (
                 <FolderModal

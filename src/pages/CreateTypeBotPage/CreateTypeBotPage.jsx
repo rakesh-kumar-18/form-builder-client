@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import styles from "./CreateTypeBotPage.module.css";
+import { toast } from "react-toastify";
 import { MdOutlineTextsms } from "react-icons/md";
 import { CiImageOn } from "react-icons/ci";
 import { TbMovie } from "react-icons/tb";
@@ -29,6 +30,7 @@ const CreateTypeBotPage = () => {
     const [formName, setFormName] = useState("");
     const [flowItems, setFlowItems] = useState([]);
     const [errors, setErrors] = useState({});
+    const [formNameError, setFormNameError] = useState("");
 
     const { handleCreateTypeBot } = useContext(FormBuilderContext);
 
@@ -49,6 +51,12 @@ const CreateTypeBotPage = () => {
                 newErrors[item.id] = true;
             }
         });
+
+        if (!formName.trim()) {
+            setFormNameError("Form name is required");
+            toast.error("Form name is required");
+            return;
+        }
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -88,17 +96,31 @@ const CreateTypeBotPage = () => {
         });
     };
 
+    const handleFormNameChange = (e) => {
+        setFormName(e.target.value);
+        if (e.target.value.trim()) {
+            setFormNameError("");
+        }
+    };
+
     return (
         <div className={styles.createTypeBotPage}>
             <div className={styles.navbar}>
                 {activeTab === "flow" ? (
-                    <input
-                        type="text"
-                        placeholder="Enter Form Name"
-                        className={styles.formNameInput}
-                        value={formName}
-                        onChange={(e) => setFormName(e.target.value)}
-                    />
+                    <div className={styles.formNameContainer}>
+                        <input
+                            type="text"
+                            placeholder="Enter Form Name"
+                            className={styles.formNameInput}
+                            value={formName}
+                            onChange={handleFormNameChange}
+                        />
+                        {formNameError && (
+                            <span className={styles.errorText}>
+                                {formNameError}
+                            </span>
+                        )}
+                    </div>
                 ) : (
                     <div style={{ width: "180px" }}></div>
                 )}
@@ -278,7 +300,11 @@ const CreateTypeBotPage = () => {
                                     ].includes(item.type) ? (
                                         <>
                                             <div
-                                                className={`${styles.inputContainer} ${errors[item.id] ? styles.errorInput : ""}`}
+                                                className={`${styles.inputContainer} ${
+                                                    errors[item.id]
+                                                        ? styles.errorInput
+                                                        : ""
+                                                }`}
                                             >
                                                 <span>{item.icon}</span>
                                                 <input

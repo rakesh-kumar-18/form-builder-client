@@ -4,6 +4,7 @@
     align-items: center;
     color: #ffffffeb;
     background-color: #121212;
+    min-height: 100vh;
 }
 
 .content {
@@ -30,6 +31,13 @@
     font-size: medium;
 }
 
+.typebotContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
 .typebotButton {
     padding: 4rem 2.5rem;
     background-color: #1a5fff;
@@ -39,8 +47,20 @@
     flex-direction: column;
     align-items: center;
     font-size: medium;
-    margin-top: 1rem;
     cursor: pointer;
+}
+
+.typebot {
+    background-color: #ffffff80;
+    padding: 4rem 2.5rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: medium;
+    position: relative;
+    min-width: 6rem;
+    /* min-height: 10rem; */
 }
 
 .folders {
@@ -57,12 +77,24 @@
     justify-content: space-between;
     align-items: center;
     width: 200px;
+    cursor: pointer;
+}
+
+.activeFolder {
+    background-color: #1a5fff;
 }
 
 .deleteButton {
     color: #f55050;
     cursor: pointer;
     font-size: large;
+}
+
+.typebot .deleteButton {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    font-size: larger;
 }
 
 .deleteButton:hover {

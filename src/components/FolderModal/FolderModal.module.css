@@ -3,6 +3,8 @@
     top: 10rem;
     left: 50%;
     transform: translateX(-50%);
+    background-color: #121212;
+    border-radius: 20px;
 }
 
 .modal {

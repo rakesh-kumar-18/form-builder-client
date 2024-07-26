@@ -3,7 +3,9 @@
     justify-content: space-around;
     align-items: flex-start;
     padding: 40px 60px;
+    padding-top: 0px;
     color: #ffffffeb;
+    background-color: #171923;
 }
 
 .column {
@@ -11,8 +13,13 @@
     margin: 0 20px;
 }
 
+.column p {
+    margin-top: 2rem;
+}
+
 .link {
-    margin-left: -3rem;
+    margin-left: 5.7rem;
+    margin-top: -1rem;
 }
 
 ul {

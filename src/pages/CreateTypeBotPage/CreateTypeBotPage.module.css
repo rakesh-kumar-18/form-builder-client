@@ -16,6 +16,11 @@
     background-color: #18181b;
 }
 
+.formNameContainer {
+    display: flex;
+    flex-direction: column;
+}
+
 .formNameInput {
     width: fit-content;
     padding: 4px 10px;

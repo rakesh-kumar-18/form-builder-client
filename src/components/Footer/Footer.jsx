@@ -11,12 +11,10 @@ const Footer = () => {
                         ❤️
                     </span>{" "}
                     by
-                    <div>
-                        <a href="https://cuvette.tech" className={styles.link}>
-                            @cuvette
-                        </a>
-                    </div>
                 </p>
+                <div className={styles.link}>
+                    <a href="https://cuvette.tech">@cuvette</a>
+                </div>
             </div>
             <div className={styles.column}>
                 <ul>

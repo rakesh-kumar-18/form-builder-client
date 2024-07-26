@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useCallback } from "react";
 import {
     getCurrentUser,
     logoutUser,
@@ -36,6 +36,24 @@ const FormBuilderContextProvider = ({ children }) => {
         fetchUser();
     }, [username]);
 
+    const fetchUserFolders = useCallback(async () => {
+        try {
+            const response = await getUserFolders();
+            setFolders(response.data.data);
+        } catch (error) {
+            console.error("Error fetching folders:", error);
+        }
+    }, []);
+
+    const fetchUserTypeBots = useCallback(async () => {
+        try {
+            const response = await getUserTypeBots();
+            setTypeBots(response.data.data);
+        } catch (error) {
+            console.error("Error fetching typebots:", error);
+        }
+    }, []);
+
     useEffect(() => {
         if (user) {
             setUsername(user.data.username);
@@ -46,7 +64,7 @@ const FormBuilderContextProvider = ({ children }) => {
             setFolders([]);
             setTypeBots([]);
         }
-    }, [user]);
+    }, [user, fetchUserFolders, fetchUserTypeBots]);
 
     const fetchUser = async () => {
         try {
@@ -112,68 +130,62 @@ const FormBuilderContextProvider = ({ children }) => {
         }
     };
 
-    const fetchUserFolders = async () => {
-        try {
-            const response = await getUserFolders();
-            setFolders(response.data);
-        } catch (error) {
-            console.error("Error fetching folders:", error);
-        }
-    };
+    const handleCreateFolder = useCallback(
+        async (folderData) => {
+            try {
+                await createFolder(folderData);
+                fetchUserFolders();
+            } catch (error) {
+                console.error("Error creating folder:", error);
+            }
+        },
+        [fetchUserFolders]
+    );
 
-    const handleCreateFolder = async (folderData) => {
-        try {
-            await createFolder(folderData);
-            fetchUserFolders();
-        } catch (error) {
-            console.error("Error creating folder:", error);
-        }
-    };
+    const handleDeleteFolder = useCallback(
+        async (folderId) => {
+            try {
+                await deleteFolder(folderId);
+                fetchUserFolders();
+            } catch (error) {
+                console.error("Error deleting folder:", error);
+            }
+        },
+        [fetchUserFolders]
+    );
 
-    const handleDeleteFolder = async (folderId) => {
-        try {
-            await deleteFolder(folderId);
-            fetchUserFolders();
-        } catch (error) {
-            console.error("Error deleting folder:", error);
-        }
-    };
+    const handleCreateTypeBot = useCallback(
+        async (typeBotData) => {
+            try {
+                await createTypeBot(typeBotData);
+                fetchUserTypeBots();
+            } catch (error) {
+                console.error("Error creating typebot:", error);
+            }
+        },
+        [fetchUserTypeBots]
+    );
 
-    const fetchUserTypeBots = async () => {
-        try {
-            const response = await getUserTypeBots();
-            setTypeBots(response.data);
-        } catch (error) {
-            console.error("Error fetching typebots:", error);
-        }
-    };
+    const handleDeleteTypeBot = useCallback(
+        async (typeBotId) => {
+            try {
+                await deleteTypeBot(typeBotId);
+                fetchUserTypeBots();
+            } catch (error) {
+                console.error("Error deleting typebot:", error);
+            }
+        },
+        [fetchUserTypeBots]
+    );
 
-    const handleCreateTypeBot = async (typeBotData) => {
-        try {
-            await createTypeBot(typeBotData);
-            fetchUserTypeBots();
-        } catch (error) {
-            console.error("Error creating typebot:", error);
-        }
-    };
-
-    const handleDeleteTypeBot = async (typeBotId) => {
-        try {
-            await deleteTypeBot(typeBotId);
-            fetchUserTypeBots();
-        } catch (error) {
-            console.error("Error deleting typebot:", error);
-        }
-    };
-
-    const handleGetTypeBotsByFolder = async (folderId) => {
+    const handleGetTypeBotsByFolder = useCallback(async (folderId) => {
         try {
             const response = await getTypeBotsByFolder(folderId);
-            setTypeBots(response.data);
+            setTypeBots(response.data.data);
         } catch (error) {
             console.error("Error fetching typebots by folder:", error);
         }
-    };
+    }, []);
 
     const handleAddResponse = async (responseData) => {
         try {
@@ -229,6 +241,7 @@ const FormBuilderContextProvider = ({ children }) => {
                 typeBots,
                 handleCreateTypeBot,
                 handleDeleteTypeBot,
+                fetchUserTypeBots,
                 handleGetTypeBotsByFolder,
                 responses,
                 handleAddResponse,
