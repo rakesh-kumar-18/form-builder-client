@@ -13,6 +13,7 @@ import {
     deleteTypeBot,
     getUserTypeBots,
     getTypeBotsByFolder,
+    getTypeBotById, // Import the new API call
 } from "../api/typeBotApi";
 import {
     addResponse,
@@ -189,6 +190,16 @@ const FormBuilderContextProvider = ({ children }) => {
         }
     }, []);
 
+    const handleGetTypeBotById = useCallback(async (typeBotId) => {
+        try {
+            const response = await getTypeBotById(typeBotId);
+            return response.data.data; // Returning the data for further use
+        } catch (error) {
+            console.error("Error fetching typebot by ID:", error);
+            throw error;
+        }
+    }, []);
+
     const handleAddResponse = async (responseData) => {
         try {
             await addResponse(responseData);
@@ -245,6 +256,7 @@ const FormBuilderContextProvider = ({ children }) => {
                 handleDeleteTypeBot,
                 fetchUserTypeBots,
                 handleGetTypeBotsByFolder,
+                handleGetTypeBotById, // Include the new handler in the context
                 responses,
                 handleAddResponse,
                 handleIncrementViewCount,

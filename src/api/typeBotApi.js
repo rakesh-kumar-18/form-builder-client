@@ -14,3 +14,4 @@ export const deleteTypeBot = (typeBotId) =>
 export const getUserTypeBots = () => axiosInstance.get("/user");
 export const getTypeBotsByFolder = (folderId) =>
     axiosInstance.get(`/folder/${folderId}`);
+export const getTypeBotById = (typeBotId) => axiosInstance.get(`/${typeBotId}`);
