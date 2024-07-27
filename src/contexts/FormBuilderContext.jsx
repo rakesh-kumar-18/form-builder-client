@@ -157,6 +157,7 @@ const FormBuilderContextProvider = ({ children }) => {
 
     const handleCreateTypeBot = useCallback(
         async (typeBotData) => {
+            console.log(typeBotData);
             try {
                 await createTypeBot(typeBotData);
                 fetchUserTypeBots();

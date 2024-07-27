@@ -99,9 +99,15 @@ const CreateTypeBotPage = () => {
 
         console.log("hi3");
 
+        const filteredFlowItems = flowItems.map(({ baseType, type, text }) => ({
+            baseType,
+            type,
+            text,
+        }));
+
         const typeBotData = {
             name: formName,
-            flow: flowItems,
+            flow: filteredFlowItems,
             theme: selectedTheme,
             folderId,
         };
@@ -109,7 +115,7 @@ const CreateTypeBotPage = () => {
         console.log("TypeBot Data:", typeBotData);
 
         handleCreateTypeBot(typeBotData);
-        navigate("/dashboard");
+        // navigate("/dashboard");
     };
 
     const addFlowItem = (type, icon) => {
