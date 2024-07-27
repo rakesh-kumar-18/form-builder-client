@@ -22,7 +22,7 @@ import tailblue from "../../assets/theme-tail-blue.png";
 import profileImage from "../../assets/profile.png";
 import dot from "../../assets/dot.png";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
-import { decrypt } from "../../utils/encryptionUtils"; // Import the decryption utility
+import { decrypt } from "../../utils/encryptionUtils";
 
 const CreateTypeBotPage = () => {
     const navigate = useNavigate();
@@ -34,6 +34,7 @@ const CreateTypeBotPage = () => {
     const [errors, setErrors] = useState({});
     const [formNameError, setFormNameError] = useState("");
     const [folderId, setFolderId] = useState(null);
+    const [itemCounts, setItemCounts] = useState({});
 
     const { handleCreateTypeBot } = useContext(FormBuilderContext);
 
@@ -41,17 +42,26 @@ const CreateTypeBotPage = () => {
         const queryParams = new URLSearchParams(location.search);
         const encryptedFolderId = queryParams.get("folderId");
         if (encryptedFolderId) {
-            const decryptedFolderId = decrypt(
-                decodeURIComponent(encryptedFolderId)
-            );
-            setFolderId(decryptedFolderId);
+            try {
+                const decryptedFolderId = decrypt(
+                    decodeURIComponent(encryptedFolderId)
+                );
+                setFolderId(decryptedFolderId);
+            } catch (error) {
+                console.error("Failed to decrypt folder ID:", error);
+                toast.error("Failed to load folder ID.");
+            }
         }
     }, [location]);
 
     const themes = [
         { id: "light", name: "Light", image: `${light}` },
         { id: "dark", name: "Dark", image: `${dark}` },
-        { id: "tail-blue", name: "Tail Blue", image: `${tailblue}` },
+        {
+            id: "tail-blue",
+            name: "Tail Blue",
+            image: `${tailblue}`,
+        },
     ];
 
     const handleThemeClick = (themeId) => {
@@ -61,21 +71,33 @@ const CreateTypeBotPage = () => {
     const saveTypeBot = () => {
         const newErrors = {};
         flowItems.forEach((item) => {
-            if (!item.text) {
+            // Only check for text in certain types of items
+            if (
+                ["Text", "Image", "Video", "GIF", "Input Button"].includes(
+                    item.baseType
+                ) &&
+                !item.text
+            ) {
                 newErrors[item.id] = true;
             }
         });
 
+        console.log("hi1");
         if (!formName.trim()) {
             setFormNameError("Form name is required");
             toast.error("Form name is required");
+            console.log("Form name is empty");
             return;
         }
 
+        console.log("newErrors:", newErrors);
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
+            console.log("There are errors in flow items", newErrors);
             return;
         }
+
+        console.log("hi3");
 
         const typeBotData = {
             name: formName,
@@ -83,12 +105,33 @@ const CreateTypeBotPage = () => {
             theme: selectedTheme,
             folderId,
         };
+
+        console.log("TypeBot Data:", typeBotData);
+
         handleCreateTypeBot(typeBotData);
         navigate("/dashboard");
     };
 
     const addFlowItem = (type, icon) => {
-        setFlowItems([...flowItems, { id: Date.now(), type, icon, text: "" }]);
+        setItemCounts((prevCounts) => {
+            const newCounts = { ...prevCounts };
+            if (newCounts[type]) {
+                newCounts[type]++;
+            } else {
+                newCounts[type] = 1;
+            }
+
+            const newFlowItem = {
+                id: Date.now(),
+                type: `${type} ${newCounts[type]}`,
+                baseType: type,
+                icon,
+                text: "",
+            };
+
+            setFlowItems((prevItems) => [...prevItems, newFlowItem]);
+            return newCounts;
+        });
     };
 
     const deleteFlowItem = (id) => {
@@ -113,6 +156,7 @@ const CreateTypeBotPage = () => {
 
     const handleFormNameChange = (e) => {
         setFormName(e.target.value);
+        console.log("Form name updated:", e.target.value);
         if (e.target.value.trim()) {
             setFormNameError("");
         }
@@ -141,25 +185,19 @@ const CreateTypeBotPage = () => {
                 )}
                 <div className={styles.tabs}>
                     <button
-                        className={`${styles.tab} ${
-                            activeTab === "flow" ? styles.activeTab : ""
-                        }`}
+                        className={`${styles.tab} ${activeTab === "flow" ? styles.activeTab : ""}`}
                         onClick={() => setActiveTab("flow")}
                     >
                         Flow
                     </button>
                     <button
-                        className={`${styles.tab} ${
-                            activeTab === "theme" ? styles.activeTab : ""
-                        }`}
+                        className={`${styles.tab} ${activeTab === "theme" ? styles.activeTab : ""}`}
                         onClick={() => setActiveTab("theme")}
                     >
                         Theme
                     </button>
                     <button
-                        className={`${styles.tab} ${
-                            activeTab === "response" ? styles.activeTab : ""
-                        }`}
+                        className={`${styles.tab} ${activeTab === "response" ? styles.activeTab : ""}`}
                         onClick={() => setActiveTab("response")}
                     >
                         Response
@@ -227,7 +265,7 @@ const CreateTypeBotPage = () => {
                             <button
                                 className={styles.input}
                                 onClick={() =>
-                                    addFlowItem("TextInput", <RxText />)
+                                    addFlowItem("Input Text", <RxText />)
                                 }
                             >
                                 <RxText className={styles.inputIcon} />
@@ -236,7 +274,7 @@ const CreateTypeBotPage = () => {
                             <button
                                 className={styles.input}
                                 onClick={() =>
-                                    addFlowItem("NumberInput", <FaHashtag />)
+                                    addFlowItem("Input Number", <FaHashtag />)
                                 }
                             >
                                 <FaHashtag className={styles.inputIcon} />
@@ -245,7 +283,7 @@ const CreateTypeBotPage = () => {
                             <button
                                 className={styles.input}
                                 onClick={() =>
-                                    addFlowItem("EmailInput", <FiAtSign />)
+                                    addFlowItem("Input Email", <FiAtSign />)
                                 }
                             >
                                 <FiAtSign className={styles.inputIcon} />
@@ -254,7 +292,7 @@ const CreateTypeBotPage = () => {
                             <button
                                 className={styles.input}
                                 onClick={() =>
-                                    addFlowItem("PhoneInput", <FiPhone />)
+                                    addFlowItem("Input Phone", <FiPhone />)
                                 }
                             >
                                 <FiPhone className={styles.inputIcon} />
@@ -263,7 +301,10 @@ const CreateTypeBotPage = () => {
                             <button
                                 className={styles.input}
                                 onClick={() =>
-                                    addFlowItem("DateInput", <CiCalendarDate />)
+                                    addFlowItem(
+                                        "Input Date",
+                                        <CiCalendarDate />
+                                    )
                                 }
                             >
                                 <CiCalendarDate className={styles.inputIcon} />
@@ -272,7 +313,7 @@ const CreateTypeBotPage = () => {
                             <button
                                 className={styles.input}
                                 onClick={() =>
-                                    addFlowItem("RatingInput", <CiStar />)
+                                    addFlowItem("Input Rating", <CiStar />)
                                 }
                             >
                                 <CiStar className={styles.inputIcon} />
@@ -282,7 +323,7 @@ const CreateTypeBotPage = () => {
                                 className={styles.input}
                                 onClick={() =>
                                     addFlowItem(
-                                        "ButtonInput",
+                                        "Input Button",
                                         <LuCheckSquare />
                                     )
                                 }
@@ -311,15 +352,11 @@ const CreateTypeBotPage = () => {
                                         "Image",
                                         "Video",
                                         "GIF",
-                                        "ButtonInput",
-                                    ].includes(item.type) ? (
+                                        "Input Button",
+                                    ].includes(item.baseType) ? (
                                         <>
                                             <div
-                                                className={`${styles.inputContainer} ${
-                                                    errors[item.id]
-                                                        ? styles.errorInput
-                                                        : ""
-                                                }`}
+                                                className={`${styles.inputContainer} ${errors[item.id] ? styles.errorInput : ""}`}
                                             >
                                                 <span>{item.icon}</span>
                                                 <input
@@ -352,9 +389,9 @@ const CreateTypeBotPage = () => {
                                                     fontSize: "smaller",
                                                 }}
                                             >
-                                                Hint: User will input a{" "}
-                                                {item.type.toLowerCase()} on his
-                                                form
+                                                Hint: User will{" "}
+                                                {item.baseType.toLowerCase()} on
+                                                his form
                                             </p>
                                         </>
                                     )}
