@@ -1,0 +1,74 @@
+.chatBubble {
+    margin: 10px;
+}
+
+.textBubble {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 60%;
+    color: black;
+}
+
+.imageBubble {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.videoBubble {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.gifBubble {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.inputBubble {
+    display: flex;
+    align-items: center;
+}
+
+.inputBubble input,
+.inputBubble button {
+    margin: 5px;
+}
+
+.inputBubble input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.inputBubble button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.inputBubble button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.rating {
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.selectedRating {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+}
