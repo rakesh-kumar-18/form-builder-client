@@ -158,12 +158,13 @@ const FormBuilderContextProvider = ({ children }) => {
 
     const handleCreateTypeBot = useCallback(
         async (typeBotData) => {
-            console.log(typeBotData);
             try {
-                await createTypeBot(typeBotData);
+                const response = await createTypeBot(typeBotData);
                 fetchUserTypeBots();
+                return response; // Ensure to return the response
             } catch (error) {
                 console.error("Error creating typebot:", error);
+                throw error; // Ensure to throw the error so it can be caught in the component
             }
         },
         [fetchUserTypeBots]
@@ -193,7 +194,8 @@ const FormBuilderContextProvider = ({ children }) => {
     const handleGetTypeBotById = useCallback(async (typeBotId) => {
         try {
             const response = await getTypeBotById(typeBotId);
-            return response.data.data; // Returning the data for further use
+            console.log(response);
+            return response.data.data;
         } catch (error) {
             console.error("Error fetching typebot by ID:", error);
             throw error;
@@ -256,7 +258,7 @@ const FormBuilderContextProvider = ({ children }) => {
                 handleDeleteTypeBot,
                 fetchUserTypeBots,
                 handleGetTypeBotsByFolder,
-                handleGetTypeBotById, // Include the new handler in the context
+                handleGetTypeBotById,
                 responses,
                 handleAddResponse,
                 handleIncrementViewCount,

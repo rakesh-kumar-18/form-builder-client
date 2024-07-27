@@ -10,8 +10,8 @@ import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Settings from "./pages/Settings/Settings.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import CreateTypeBotPage from "./pages/CreateTypeBotPage/CreateTypeBotPage.jsx";
+import ChatPage from "./pages/ChatPage/ChatPage.jsx";
 import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
     {
@@ -49,6 +49,10 @@ const router = createBrowserRouter([
                 <CreateTypeBotPage />
             </PrivateRoute>
         ),
+    },
+    {
+        path: "chat/:id",
+        element: <ChatPage />,
     },
 ]);
 

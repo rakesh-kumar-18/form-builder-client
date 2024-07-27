@@ -22,7 +22,7 @@ import tailblue from "../../assets/theme-tail-blue.png";
 import profileImage from "../../assets/profile.png";
 import dot from "../../assets/dot.png";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
-import { decrypt } from "../../utils/encryptionUtils";
+import { decrypt, encrypt } from "../../utils/encryptionUtils";
 
 const CreateTypeBotPage = () => {
     const navigate = useNavigate();
@@ -35,6 +35,7 @@ const CreateTypeBotPage = () => {
     const [formNameError, setFormNameError] = useState("");
     const [folderId, setFolderId] = useState(null);
     const [itemCounts, setItemCounts] = useState({});
+    const [savedTypeBotId, setSavedTypeBotId] = useState(null);
 
     const { handleCreateTypeBot } = useContext(FormBuilderContext);
 
@@ -58,7 +59,7 @@ const CreateTypeBotPage = () => {
         { id: "light", name: "Light", image: `${light}` },
         { id: "dark", name: "Dark", image: `${dark}` },
         {
-            id: "tail-blue",
+            id: "tailBlue",
             name: "Tail Blue",
             image: `${tailblue}`,
         },
@@ -68,10 +69,9 @@ const CreateTypeBotPage = () => {
         setSelectedTheme(themeId);
     };
 
-    const saveTypeBot = () => {
+    const saveTypeBot = async () => {
         const newErrors = {};
         flowItems.forEach((item) => {
-            // Only check for text in certain types of items
             if (
                 ["Text", "Image", "Video", "GIF", "Input Button"].includes(
                     item.baseType
@@ -82,22 +82,16 @@ const CreateTypeBotPage = () => {
             }
         });
 
-        console.log("hi1");
         if (!formName.trim()) {
             setFormNameError("Form name is required");
             toast.error("Form name is required");
-            console.log("Form name is empty");
             return;
         }
 
-        console.log("newErrors:", newErrors);
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
-            console.log("There are errors in flow items", newErrors);
             return;
         }
-
-        console.log("hi3");
 
         const filteredFlowItems = flowItems.map(({ baseType, type, text }) => ({
             baseType,
@@ -112,10 +106,27 @@ const CreateTypeBotPage = () => {
             folderId,
         };
 
-        console.log("TypeBot Data:", typeBotData);
+        try {
+            const response = await handleCreateTypeBot(typeBotData);
+            if (response && response.data && response.data.data) {
+                setSavedTypeBotId(response.data.data._id);
+                toast.success("TypeBot saved successfully!");
+            }
+        } catch (error) {
+            console.error("Error saving TypeBot:", error);
+            toast.error("Failed to save TypeBot.");
+        }
+    };
 
-        handleCreateTypeBot(typeBotData);
-        // navigate("/dashboard");
+    const shareTypeBot = () => {
+        if (savedTypeBotId) {
+            const encryptedId = encrypt(savedTypeBotId);
+            const shareableLink = `${window.location.origin}/chat/${encodeURIComponent(encryptedId)}`;
+            navigator.clipboard.writeText(shareableLink);
+            toast.success("Link copied to clipboard!");
+        } else {
+            toast.error("Please save the TypeBot before sharing.");
+        }
     };
 
     const addFlowItem = (type, icon) => {
@@ -162,7 +173,6 @@ const CreateTypeBotPage = () => {
 
     const handleFormNameChange = (e) => {
         setFormName(e.target.value);
-        console.log("Form name updated:", e.target.value);
         if (e.target.value.trim()) {
             setFormNameError("");
         }
@@ -210,7 +220,12 @@ const CreateTypeBotPage = () => {
                     </button>
                 </div>
                 <div className={styles.actions}>
-                    <button className={styles.shareButton}>Share</button>
+                    <button
+                        className={styles.shareButton}
+                        onClick={shareTypeBot}
+                    >
+                        Share
+                    </button>
                     <button className={styles.saveButton} onClick={saveTypeBot}>
                         Save
                     </button>
