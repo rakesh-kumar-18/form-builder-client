@@ -64,8 +64,9 @@ const ChatPage = () => {
 
     const handleInputSubmit = (inputType, id) => {
         if (
-            inputType === "email" &&
-            !validateEmail(inputState[id][inputType])
+            (inputType === "email" &&
+                !validateEmail(inputState[id][inputType])) ||
+            (inputType === "phone" && !validatePhone(inputState[id][inputType]))
         ) {
             return;
         }
@@ -76,6 +77,11 @@ const ChatPage = () => {
     const validateEmail = (email) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
+    };
+
+    const validatePhone = (phone) => {
+        const re = /^[0-9]{10}$/;
+        return re.test(String(phone));
     };
 
     if (!typeBot) {

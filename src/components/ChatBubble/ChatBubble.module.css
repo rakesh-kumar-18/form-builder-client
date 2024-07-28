@@ -31,7 +31,7 @@
 .imageBubble,
 .videoBubble,
 .gifBubble {
-    background-color: #f0f0f0;
+    background-color: #f6f8fe;
     border-radius: 10px;
     padding: 10px;
     color: black;
@@ -72,7 +72,7 @@
 }
 
 .inputBubble button {
-    background-color: #0043db;
+    background-color: #1a5fff;
     color: white;
     border: none;
     padding: 6px;
@@ -87,25 +87,50 @@
 
 .inputBubble .inputButton {
     padding: 10px;
+    background-color: #053ec4;
 }
 
 .inputBubble .inputButton:disabled {
     background-color: #ff8f20;
 }
 
+.inputBubble > div {
+    background-color: #ffffff;
+    display: flex;
+    border-radius: 5px;
+    padding: 0px 10px;
+}
+
+.inputBubble.disabled > div {
+    background-color: #767677;
+}
+
 .rating {
     cursor: pointer;
     padding: 10px;
-    margin: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin: 8px 10px;
+    border-radius: 50%;
+    background-color: #1a5fff;
+    width: 1px;
+    height: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: small;
 }
 
 .selectedRating {
-    background-color: #007bff;
+    background-color: #ff8e21;
     color: white;
     padding: 10px;
-    margin: 5px;
-    border: 1px solid #007bff;
-    border-radius: 5px;
+    margin: 8px 10px;
+    border-radius: 50%;
+    width: 1px;
+    height: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: small;
 }

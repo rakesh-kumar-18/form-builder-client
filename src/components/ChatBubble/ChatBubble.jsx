@@ -142,27 +142,31 @@ const ChatBubble = ({
                 );
             case "Input Rating":
                 return (
-                    <div className={styles.inputBubble}>
-                        {[1, 2, 3, 4, 5].map((rating) => (
-                            <span
-                                key={rating}
-                                className={
-                                    inputState.rating === rating
-                                        ? styles.selectedRating
-                                        : styles.rating
-                                }
-                                onClick={() =>
-                                    !submittedFields &&
-                                    onInputChange(
-                                        { target: { value: rating } },
-                                        "rating",
-                                        item.id
-                                    )
-                                }
-                            >
-                                {rating}
-                            </span>
-                        ))}
+                    <div
+                        className={`${styles.inputBubble} ${submittedFields ? styles.disabled : ""}`}
+                    >
+                        <div>
+                            {[1, 2, 3, 4, 5].map((rating) => (
+                                <span
+                                    key={rating}
+                                    className={
+                                        inputState.rating === rating
+                                            ? styles.selectedRating
+                                            : styles.rating
+                                    }
+                                    onClick={() =>
+                                        !submittedFields &&
+                                        onInputChange(
+                                            { target: { value: rating } },
+                                            "rating",
+                                            item.id
+                                        )
+                                    }
+                                >
+                                    {rating}
+                                </span>
+                            ))}
+                        </div>
                         <button
                             onClick={() => onInputSubmit("rating", item.id)}
                             disabled={!inputState.rating || submittedFields}
