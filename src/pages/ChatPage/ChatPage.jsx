@@ -24,7 +24,10 @@ const ChatPage = () => {
 
     const displayNextFlowItem = useCallback(() => {
         if (currentFlowIndex < typeBot.flow.length) {
-            const nextItem = typeBot.flow[currentFlowIndex];
+            const nextItem = {
+                ...typeBot.flow[currentFlowIndex],
+                id: currentFlowIndex,
+            };
             setChatHistory((prevHistory) => [...prevHistory, nextItem]);
 
             if (!nextItem.baseType.includes("Input")) {
@@ -52,15 +55,21 @@ const ChatPage = () => {
         }
     }, [typeBot, displayNextFlowItem]);
 
-    const handleInputChange = (e, inputType) => {
-        setInputState({ ...inputState, [inputType]: e.target.value });
+    const handleInputChange = (e, inputType, id) => {
+        setInputState((prev) => ({
+            ...prev,
+            [id]: { ...prev[id], [inputType]: e.target.value },
+        }));
     };
 
-    const handleInputSubmit = (inputType) => {
-        if (inputType === "email" && !validateEmail(inputState[inputType])) {
+    const handleInputSubmit = (inputType, id) => {
+        if (
+            inputType === "email" &&
+            !validateEmail(inputState[id][inputType])
+        ) {
             return;
         }
-        setSubmittedFields((prev) => ({ ...prev, [inputType]: true }));
+        setSubmittedFields((prev) => ({ ...prev, [id]: true }));
         setCurrentFlowIndex((prevIndex) => prevIndex + 1);
     };
 
@@ -97,8 +106,8 @@ const ChatPage = () => {
                     item={item}
                     onInputChange={handleInputChange}
                     onInputSubmit={handleInputSubmit}
-                    inputState={inputState}
-                    submittedFields={submittedFields}
+                    inputState={inputState[item.id] || {}}
+                    submittedFields={submittedFields[item.id]}
                     isLastBotMessage={
                         !item.baseType.includes("Input") &&
                         (index === chatHistory.length - 1 ||

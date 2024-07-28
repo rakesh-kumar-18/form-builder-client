@@ -152,7 +152,34 @@ const CreateTypeBotPage = () => {
     };
 
     const deleteFlowItem = (id) => {
-        setFlowItems(flowItems.filter((item) => item.id !== id));
+        const itemType = flowItems.find((item) => item.id === id)?.baseType;
+        if (itemType) {
+            setItemCounts((prevCounts) => {
+                const newCounts = { ...prevCounts };
+                if (newCounts[itemType]) {
+                    newCounts[itemType]--;
+                }
+                return newCounts;
+            });
+
+            setFlowItems((prevItems) => {
+                const updatedItems = prevItems
+                    .filter((item) => item.id !== id)
+                    .map((item) => {
+                        if (item.baseType === itemType) {
+                            const [type, count] = item.type.split(" ");
+                            const newCount = parseInt(count, 10);
+                            return {
+                                ...item,
+                                type: `${type} ${newCount > 1 ? newCount - 1 : newCount}`,
+                            };
+                        }
+                        return item;
+                    });
+                return updatedItems;
+            });
+        }
+
         setErrors((prevErrors) => {
             const newErrors = { ...prevErrors };
             delete newErrors[id];
