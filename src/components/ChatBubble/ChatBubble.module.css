@@ -1,33 +1,62 @@
 .chatBubble {
+    display: flex;
+    align-items: flex-end;
     margin: 10px;
 }
 
-.textBubble {
+.botBubble {
+    justify-content: flex-start;
+    max-width: 60%;
+    margin-left: 50px;
+    /* Same margin as profile image width plus some spacing */
+    position: relative;
+}
+
+.userBubble {
+    justify-content: flex-end;
+    margin-left: auto;
+    max-width: 60%;
+}
+
+.profileImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+    left: -50px;
+    /* Adjust to position the image outside the bubble */
+}
+
+.textBubble,
+.imageBubble,
+.videoBubble,
+.gifBubble {
     background-color: #f0f0f0;
     border-radius: 10px;
     padding: 10px;
-    max-width: 60%;
     color: black;
 }
 
 .imageBubble {
     max-width: 100%;
-    border-radius: 10px;
 }
 
 .videoBubble {
     max-width: 100%;
-    border-radius: 10px;
 }
 
 .gifBubble {
     max-width: 100%;
-    border-radius: 10px;
 }
 
 .inputBubble {
     display: flex;
     align-items: center;
+    /* max-width: 60%; */
+}
+
+.inputBubble input:disabled {
+    background-color: #767677;
 }
 
 .inputBubble input,
@@ -43,17 +72,25 @@
 }
 
 .inputBubble button {
-    background-color: #007bff;
+    background-color: #0043db;
     color: white;
     border: none;
-    padding: 10px;
+    padding: 6px;
     border-radius: 5px;
     cursor: pointer;
 }
 
 .inputBubble button:disabled {
-    background-color: #ccc;
+    background-color: #767677;
     cursor: not-allowed;
+}
+
+.inputBubble .inputButton {
+    padding: 10px;
+}
+
+.inputBubble .inputButton:disabled {
+    background-color: #ff8f20;
 }
 
 .rating {

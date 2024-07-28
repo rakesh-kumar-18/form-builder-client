@@ -13,6 +13,14 @@ const ChatPage = () => {
     const [currentFlowIndex, setCurrentFlowIndex] = useState(0);
     const [chatHistory, setChatHistory] = useState([]);
     const [inputState, setInputState] = useState({});
+    const [submittedFields, setSubmittedFields] = useState({});
+
+    const resetChat = useCallback(() => {
+        setCurrentFlowIndex(0);
+        setChatHistory([]);
+        setInputState({});
+        setSubmittedFields({});
+    }, []);
 
     const displayNextFlowItem = useCallback(() => {
         if (currentFlowIndex < typeBot.flow.length) {
@@ -32,10 +40,11 @@ const ChatPage = () => {
             const decryptedId = decrypt(decodeURIComponent(id));
             const fetchedTypeBot = await handleGetTypeBotById(decryptedId);
             setTypeBot(fetchedTypeBot);
+            resetChat();
         };
 
         fetchTypeBot();
-    }, [id, handleGetTypeBotById]);
+    }, [id, handleGetTypeBotById, resetChat]);
 
     useEffect(() => {
         if (typeBot) {
@@ -48,15 +57,11 @@ const ChatPage = () => {
     };
 
     const handleInputSubmit = (inputType) => {
-        if (
-            inputState[inputType] &&
-            inputType === "email" &&
-            !validateEmail(inputState[inputType])
-        ) {
+        if (inputType === "email" && !validateEmail(inputState[inputType])) {
             return;
         }
-        setInputState({ ...inputState, submitted: true });
-        setCurrentFlowIndex(currentFlowIndex + 1);
+        setSubmittedFields((prev) => ({ ...prev, [inputType]: true }));
+        setCurrentFlowIndex((prevIndex) => prevIndex + 1);
     };
 
     const validateEmail = (email) => {
@@ -93,6 +98,12 @@ const ChatPage = () => {
                     onInputChange={handleInputChange}
                     onInputSubmit={handleInputSubmit}
                     inputState={inputState}
+                    submittedFields={submittedFields}
+                    isLastBotMessage={
+                        !item.baseType.includes("Input") &&
+                        (index === chatHistory.length - 1 ||
+                            chatHistory[index + 1].baseType.includes("Input"))
+                    }
                 />
             ))}
         </div>

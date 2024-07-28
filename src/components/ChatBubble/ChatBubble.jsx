@@ -1,7 +1,16 @@
 /* eslint-disable react/prop-types */
 import styles from "./ChatBubble.module.css";
+import profileImage from "../../assets/profile.png";
+import { IoMdSend } from "react-icons/io";
 
-const ChatBubble = ({ item, onInputChange, onInputSubmit, inputState }) => {
+const ChatBubble = ({
+    item,
+    onInputChange,
+    onInputSubmit,
+    inputState,
+    submittedFields,
+    isLastBotMessage,
+}) => {
     const renderBubbleContent = () => {
         switch (item.baseType) {
             case "Text":
@@ -38,13 +47,13 @@ const ChatBubble = ({ item, onInputChange, onInputSubmit, inputState }) => {
                             value={inputState.text || ""}
                             onChange={(e) => onInputChange(e, "text")}
                             placeholder="Enter your text"
-                            disabled={inputState.submitted}
+                            disabled={submittedFields.text}
                         />
                         <button
                             onClick={() => onInputSubmit("text")}
-                            disabled={inputState.submitted}
+                            disabled={!inputState.text || submittedFields.text}
                         >
-                            Send
+                            <IoMdSend />
                         </button>
                     </div>
                 );
@@ -56,13 +65,17 @@ const ChatBubble = ({ item, onInputChange, onInputSubmit, inputState }) => {
                             value={inputState.number || ""}
                             onChange={(e) => onInputChange(e, "number")}
                             placeholder="Enter your number"
-                            disabled={inputState.submitted}
+                            disabled={submittedFields.number}
                         />
                         <button
                             onClick={() => onInputSubmit("number")}
-                            disabled={inputState.submitted}
+                            disabled={
+                                !inputState.number || submittedFields.number
+                            }
                         >
-                            Send
+                            <IoMdSend
+                                style={{ fontSize: "x-large", display: "flex" }}
+                            />
                         </button>
                     </div>
                 );
@@ -74,13 +87,17 @@ const ChatBubble = ({ item, onInputChange, onInputSubmit, inputState }) => {
                             value={inputState.email || ""}
                             onChange={(e) => onInputChange(e, "email")}
                             placeholder="Enter your email"
-                            disabled={inputState.submitted}
+                            disabled={submittedFields.email}
                         />
                         <button
                             onClick={() => onInputSubmit("email")}
-                            disabled={inputState.submitted}
+                            disabled={
+                                !inputState.email || submittedFields.email
+                            }
                         >
-                            Send
+                            <IoMdSend
+                                style={{ fontSize: "x-large", display: "flex" }}
+                            />
                         </button>
                     </div>
                 );
@@ -92,13 +109,17 @@ const ChatBubble = ({ item, onInputChange, onInputSubmit, inputState }) => {
                             value={inputState.phone || ""}
                             onChange={(e) => onInputChange(e, "phone")}
                             placeholder="Enter your phone"
-                            disabled={inputState.submitted}
+                            disabled={submittedFields.phone}
                         />
                         <button
                             onClick={() => onInputSubmit("phone")}
-                            disabled={inputState.submitted}
+                            disabled={
+                                !inputState.phone || submittedFields.phone
+                            }
                         >
-                            Send
+                            <IoMdSend
+                                style={{ fontSize: "x-large", display: "flex" }}
+                            />
                         </button>
                     </div>
                 );
@@ -109,14 +130,15 @@ const ChatBubble = ({ item, onInputChange, onInputSubmit, inputState }) => {
                             type="date"
                             value={inputState.date || ""}
                             onChange={(e) => onInputChange(e, "date")}
-                            placeholder="Select a date"
-                            disabled={inputState.submitted}
+                            disabled={submittedFields.date}
                         />
                         <button
                             onClick={() => onInputSubmit("date")}
-                            disabled={inputState.submitted}
+                            disabled={!inputState.date || submittedFields.date}
                         >
-                            Send
+                            <IoMdSend
+                                style={{ fontSize: "x-large", display: "flex" }}
+                            />
                         </button>
                     </div>
                 );
@@ -132,7 +154,7 @@ const ChatBubble = ({ item, onInputChange, onInputSubmit, inputState }) => {
                                         : styles.rating
                                 }
                                 onClick={() =>
-                                    !inputState.submitted &&
+                                    !submittedFields.rating &&
                                     onInputChange(
                                         { target: { value: rating } },
                                         "rating"
@@ -144,9 +166,13 @@ const ChatBubble = ({ item, onInputChange, onInputSubmit, inputState }) => {
                         ))}
                         <button
                             onClick={() => onInputSubmit("rating")}
-                            disabled={inputState.submitted}
+                            disabled={
+                                !inputState.rating || submittedFields.rating
+                            }
                         >
-                            Send
+                            <IoMdSend
+                                style={{ fontSize: "x-large", display: "flex" }}
+                            />
                         </button>
                     </div>
                 );
@@ -155,7 +181,10 @@ const ChatBubble = ({ item, onInputChange, onInputSubmit, inputState }) => {
                     <div className={styles.inputBubble}>
                         <button
                             onClick={() => onInputSubmit("button")}
-                            disabled={inputState.submitted || inputState.button}
+                            disabled={
+                                submittedFields.button || inputState.button
+                            }
+                            className={styles.inputButton}
                         >
                             {item.text}
                         </button>
@@ -166,7 +195,20 @@ const ChatBubble = ({ item, onInputChange, onInputSubmit, inputState }) => {
         }
     };
 
-    return <div className={styles.chatBubble}>{renderBubbleContent()}</div>;
+    return (
+        <div
+            className={`${styles.chatBubble} ${item.baseType.includes("Input") ? styles.userBubble : styles.botBubble}`}
+        >
+            {!item.baseType.includes("Input") && isLastBotMessage && (
+                <img
+                    src={profileImage}
+                    alt="Profile"
+                    className={styles.profileImage}
+                />
+            )}
+            {renderBubbleContent()}
+        </div>
+    );
 };
 
 export default ChatBubble;
