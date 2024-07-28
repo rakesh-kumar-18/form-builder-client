@@ -1,25 +1,35 @@
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
 import styles from "./ChatPage.module.css";
 import { decrypt } from "../../utils/encryptionUtils";
 import Loader from "../../components/Loader/Loader";
 import ChatBubble from "../../components/ChatBubble/ChatBubble";
+import { v4 as uuidv4 } from "uuid";
 
 const ChatPage = () => {
     const { id } = useParams();
-    const { handleGetTypeBotById } = useContext(FormBuilderContext);
+    const {
+        handleGetTypeBotById,
+        handleAddResponse,
+        handleIncrementViewCount,
+        handleIncrementStartCount,
+    } = useContext(FormBuilderContext);
     const [typeBot, setTypeBot] = useState(null);
     const [currentFlowIndex, setCurrentFlowIndex] = useState(0);
     const [chatHistory, setChatHistory] = useState([]);
     const [inputState, setInputState] = useState({});
     const [submittedFields, setSubmittedFields] = useState({});
+    const [responseId, setResponseId] = useState(uuidv4());
+    const [hasStarted, setHasStarted] = useState(false);
 
     const resetChat = useCallback(() => {
         setCurrentFlowIndex(0);
         setChatHistory([]);
         setInputState({});
         setSubmittedFields({});
+        setResponseId(uuidv4());
+        setHasStarted(false);
     }, []);
 
     const displayNextFlowItem = useCallback(() => {
@@ -44,10 +54,11 @@ const ChatPage = () => {
             const fetchedTypeBot = await handleGetTypeBotById(decryptedId);
             setTypeBot(fetchedTypeBot);
             resetChat();
+            await handleIncrementViewCount(decryptedId); // Increment view count on mount
         };
 
         fetchTypeBot();
-    }, [id, handleGetTypeBotById, resetChat]);
+    }, [id, handleGetTypeBotById, resetChat, handleIncrementViewCount]);
 
     useEffect(() => {
         if (typeBot) {
@@ -62,16 +73,42 @@ const ChatPage = () => {
         }));
     };
 
-    const handleInputSubmit = (inputType, id) => {
+    const handleInputSubmit = async (inputType, id, value) => {
+        const currentInputState = inputState[id] || {};
+
         if (
             (inputType === "email" &&
-                !validateEmail(inputState[id][inputType])) ||
-            (inputType === "phone" && !validatePhone(inputState[id][inputType]))
+                !validateEmail(currentInputState[inputType])) ||
+            (inputType === "phone" &&
+                !validatePhone(currentInputState[inputType]))
         ) {
             return;
         }
-        setSubmittedFields((prev) => ({ ...prev, [id]: true }));
-        setCurrentFlowIndex((prevIndex) => prevIndex + 1);
+
+        const interactionData = {
+            typeBotId: typeBot._id,
+            responseId,
+            interactionId: id, // Use the current flow index or another unique identifier
+            data: {
+                [inputType]: value || currentInputState[inputType], // For button input
+            },
+        };
+
+        try {
+            await handleAddResponse(interactionData);
+
+            // Increment start count on first interaction
+            if (!hasStarted) {
+                const decryptedId = decrypt(decodeURIComponent(id));
+                await handleIncrementStartCount(decryptedId);
+                setHasStarted(true);
+            }
+
+            setSubmittedFields((prev) => ({ ...prev, [id]: true }));
+            setCurrentFlowIndex((prevIndex) => prevIndex + 1);
+        } catch (error) {
+            console.error("Error adding response:", error);
+        }
     };
 
     const validateEmail = (email) => {
@@ -111,7 +148,9 @@ const ChatPage = () => {
                     key={index}
                     item={item}
                     onInputChange={handleInputChange}
-                    onInputSubmit={handleInputSubmit}
+                    onInputSubmit={(inputType, id) =>
+                        handleInputSubmit(inputType, id, item.text)
+                    }
                     inputState={inputState[item.id] || {}}
                     submittedFields={submittedFields[item.id]}
                     isLastBotMessage={

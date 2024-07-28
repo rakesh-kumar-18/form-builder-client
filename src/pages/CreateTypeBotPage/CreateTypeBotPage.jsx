@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import styles from "./CreateTypeBotPage.module.css";
 import { toast } from "react-toastify";
 import { MdOutlineTextsms } from "react-icons/md";
@@ -27,6 +27,7 @@ import { decrypt, encrypt } from "../../utils/encryptionUtils";
 const CreateTypeBotPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { id } = useParams();
     const [activeTab, setActiveTab] = useState("flow");
     const [selectedTheme, setSelectedTheme] = useState("light");
     const [formName, setFormName] = useState("");
@@ -36,8 +37,16 @@ const CreateTypeBotPage = () => {
     const [folderId, setFolderId] = useState(null);
     const [itemCounts, setItemCounts] = useState({});
     const [savedTypeBotId, setSavedTypeBotId] = useState(null);
+    const [views, setViews] = useState(0);
+    const [starts, setStarts] = useState(0);
+    const [completionRate, setCompletionRate] = useState(0);
 
-    const { handleCreateTypeBot } = useContext(FormBuilderContext);
+    const {
+        handleCreateTypeBot,
+        handleGetTypeBotById,
+        responses,
+        fetchResponses,
+    } = useContext(FormBuilderContext);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
@@ -54,6 +63,31 @@ const CreateTypeBotPage = () => {
             }
         }
     }, [location]);
+
+    useEffect(() => {
+        if (id) {
+            const fetchTypeBotData = async () => {
+                const decryptedId = decrypt(decodeURIComponent(id));
+                const fetchedTypeBot = await handleGetTypeBotById(decryptedId);
+                setFormName(fetchedTypeBot.name);
+                setFlowItems(fetchedTypeBot.flow);
+                setSelectedTheme(fetchedTypeBot.theme);
+                fetchResponses(decryptedId);
+                setViews(fetchedTypeBot.views);
+                setStarts(fetchedTypeBot.starts);
+                setCompletionRate(
+                    fetchedTypeBot.starts
+                        ? Math.round(
+                              (fetchedTypeBot.completions /
+                                  fetchedTypeBot.starts) *
+                                  100
+                          )
+                        : 0
+                );
+            };
+            fetchTypeBotData();
+        }
+    }, [id, handleGetTypeBotById, fetchResponses]);
 
     const themes = [
         { id: "light", name: "Light", image: `${light}` },
@@ -167,7 +201,11 @@ const CreateTypeBotPage = () => {
                     .filter((item) => item.id !== id)
                     .map((item) => {
                         if (item.baseType === itemType) {
-                            const [type, count] = item.type.split(" ");
+                            const lastSpaceIndex = item.type.lastIndexOf(" ");
+                            const type = item.type.substring(0, lastSpaceIndex);
+                            const count = item.type.substring(
+                                lastSpaceIndex + 1
+                            );
                             const newCount = parseInt(count, 10);
                             return {
                                 ...item,
@@ -228,19 +266,25 @@ const CreateTypeBotPage = () => {
                 )}
                 <div className={styles.tabs}>
                     <button
-                        className={`${styles.tab} ${activeTab === "flow" ? styles.activeTab : ""}`}
+                        className={`${styles.tab} ${
+                            activeTab === "flow" ? styles.activeTab : ""
+                        }`}
                         onClick={() => setActiveTab("flow")}
                     >
                         Flow
                     </button>
                     <button
-                        className={`${styles.tab} ${activeTab === "theme" ? styles.activeTab : ""}`}
+                        className={`${styles.tab} ${
+                            activeTab === "theme" ? styles.activeTab : ""
+                        }`}
                         onClick={() => setActiveTab("theme")}
                     >
                         Theme
                     </button>
                     <button
-                        className={`${styles.tab} ${activeTab === "response" ? styles.activeTab : ""}`}
+                        className={`${styles.tab} ${
+                            activeTab === "response" ? styles.activeTab : ""
+                        }`}
                         onClick={() => setActiveTab("response")}
                     >
                         Response
@@ -404,7 +448,11 @@ const CreateTypeBotPage = () => {
                                     ].includes(item.baseType) ? (
                                         <>
                                             <div
-                                                className={`${styles.inputContainer} ${errors[item.id] ? styles.errorInput : ""}`}
+                                                className={`${styles.inputContainer} ${
+                                                    errors[item.id]
+                                                        ? styles.errorInput
+                                                        : ""
+                                                }`}
                                             >
                                                 <span>{item.icon}</span>
                                                 <input
@@ -504,6 +552,62 @@ const CreateTypeBotPage = () => {
                             <img src={dot} alt="dot" className={styles.dot} />
                         </div>
                     </div>
+                </div>
+            )}
+            {activeTab === "response" && (
+                <div className={styles.responseContent}>
+                    {responses.length > 0 ? (
+                        <>
+                            <div className={styles.analytics}>
+                                <div className={styles.card}>
+                                    <h4>Views</h4>
+                                    <p>{views}</p>
+                                </div>
+                                <div className={styles.card}>
+                                    <h4>Starts</h4>
+                                    <p>{starts}</p>
+                                </div>
+                                <div className={styles.card}>
+                                    <h4>Completion Rate</h4>
+                                    <p>{completionRate}%</p>
+                                </div>
+                            </div>
+                            <div className={styles.responseTable}>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Submitted at</th>
+                                            {flowItems.map((item, index) => (
+                                                <th key={index}>{item.type}</th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {responses.map((response, index) => (
+                                            <tr key={index}>
+                                                <td>
+                                                    {new Date(
+                                                        response.submittedAt
+                                                    ).toLocaleString()}
+                                                </td>
+                                                {flowItems.map((item, idx) => (
+                                                    <td key={idx}>
+                                                        {response.data.get(
+                                                            item.type
+                                                        )}
+                                                    </td>
+                                                ))}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </>
+                    ) : (
+                        <div className={styles.noData}>
+                            <p>No Response yet collected</p>
+                        </div>
+                    )}
                 </div>
             )}
         </div>
