@@ -229,7 +229,7 @@ const FormBuilderContextProvider = ({ children }) => {
     const fetchResponses = async (typeBotId) => {
         try {
             const response = await getResponses(typeBotId);
-            setResponses(response.data.responses);
+            setResponses(response.data.data.responses);
         } catch (error) {
             console.error("Error fetching responses:", error);
         }
@@ -259,6 +259,7 @@ const FormBuilderContextProvider = ({ children }) => {
                 handleGetTypeBotsByFolder,
                 handleGetTypeBotById,
                 responses,
+                fetchResponses,
                 handleAddResponse,
                 handleIncrementViewCount,
                 handleIncrementStartCount,

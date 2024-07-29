@@ -51,6 +51,14 @@ const router = createBrowserRouter([
         ),
     },
     {
+        path: "create-typebot/:id",
+        element: (
+            <PrivateRoute>
+                <CreateTypeBotPage />
+            </PrivateRoute>
+        ),
+    },
+    {
         path: "chat/:id",
         element: <ChatPage />,
     },

@@ -577,9 +577,17 @@ const CreateTypeBotPage = () => {
                                     <thead>
                                         <tr>
                                             <th>Submitted at</th>
-                                            {flowItems.map((item, index) => (
-                                                <th key={index}>{item.type}</th>
-                                            ))}
+                                            {flowItems
+                                                .filter((item) =>
+                                                    item.baseType.startsWith(
+                                                        "Input"
+                                                    )
+                                                )
+                                                .map((item, index) => (
+                                                    <th key={index}>
+                                                        {item.type}
+                                                    </th>
+                                                ))}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -588,15 +596,40 @@ const CreateTypeBotPage = () => {
                                                 <td>
                                                     {new Date(
                                                         response.submittedAt
-                                                    ).toLocaleString()}
+                                                    ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                            month: "short",
+                                                            day: "numeric",
+                                                        }
+                                                    )}
+                                                    ,{" "}
+                                                    {new Date(
+                                                        response.submittedAt
+                                                    ).toLocaleTimeString(
+                                                        "en-US",
+                                                        {
+                                                            hour: "numeric",
+                                                            minute: "numeric",
+                                                            hour12: true,
+                                                        }
+                                                    )}
                                                 </td>
-                                                {flowItems.map((item, idx) => (
-                                                    <td key={idx}>
-                                                        {response.data.get(
-                                                            item.type
-                                                        )}
-                                                    </td>
-                                                ))}
+                                                {flowItems
+                                                    .filter((item) =>
+                                                        item.type.startsWith(
+                                                            "Input"
+                                                        )
+                                                    )
+                                                    .map((item, idx) => (
+                                                        <td key={idx}>
+                                                            {
+                                                                response.data[
+                                                                    item.type
+                                                                ]
+                                                            }
+                                                        </td>
+                                                    ))}
                                             </tr>
                                         ))}
                                     </tbody>

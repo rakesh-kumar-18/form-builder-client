@@ -64,6 +64,7 @@
     min-width: 12.5rem;
     height: 15rem;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 .folders {

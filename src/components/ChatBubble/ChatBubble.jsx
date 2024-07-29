@@ -11,6 +11,7 @@ const ChatBubble = ({
     submittedFields,
     isLastBotMessage,
 }) => {
+    console.log("Item", item);
     const renderBubbleContent = () => {
         switch (item.baseType) {
             case "Text":
@@ -44,14 +45,16 @@ const ChatBubble = ({
                     <div className={styles.inputBubble}>
                         <input
                             type="text"
-                            value={inputState.text || ""}
-                            onChange={(e) => onInputChange(e, "text", item.id)}
+                            value={inputState[item.type] || ""}
+                            onChange={(e) =>
+                                onInputChange(e, item.type, item.id)
+                            }
                             placeholder="Enter your text"
                             disabled={submittedFields}
                         />
                         <button
-                            onClick={() => onInputSubmit("text", item.id)}
-                            disabled={!inputState.text || submittedFields}
+                            onClick={() => onInputSubmit(item.type, item.id)}
+                            disabled={!inputState[item.type] || submittedFields}
                         >
                             <IoMdSend
                                 style={{ fontSize: "x-large", display: "flex" }}
@@ -64,16 +67,16 @@ const ChatBubble = ({
                     <div className={styles.inputBubble}>
                         <input
                             type="number"
-                            value={inputState.number || ""}
+                            value={inputState[item.type] || ""}
                             onChange={(e) =>
-                                onInputChange(e, "number", item.id)
+                                onInputChange(e, item.type, item.id)
                             }
                             placeholder="Enter your number"
                             disabled={submittedFields}
                         />
                         <button
-                            onClick={() => onInputSubmit("number", item.id)}
-                            disabled={!inputState.number || submittedFields}
+                            onClick={() => onInputSubmit(item.type, item.id)}
+                            disabled={!inputState[item.type] || submittedFields}
                         >
                             <IoMdSend
                                 style={{ fontSize: "x-large", display: "flex" }}
@@ -86,14 +89,16 @@ const ChatBubble = ({
                     <div className={styles.inputBubble}>
                         <input
                             type="email"
-                            value={inputState.email || ""}
-                            onChange={(e) => onInputChange(e, "email", item.id)}
+                            value={inputState[item.type] || ""}
+                            onChange={(e) =>
+                                onInputChange(e, item.type, item.id)
+                            }
                             placeholder="Enter your email"
                             disabled={submittedFields}
                         />
                         <button
-                            onClick={() => onInputSubmit("email", item.id)}
-                            disabled={!inputState.email || submittedFields}
+                            onClick={() => onInputSubmit(item.type, item.id)}
+                            disabled={!inputState[item.type] || submittedFields}
                         >
                             <IoMdSend
                                 style={{ fontSize: "x-large", display: "flex" }}
@@ -106,14 +111,16 @@ const ChatBubble = ({
                     <div className={styles.inputBubble}>
                         <input
                             type="tel"
-                            value={inputState.phone || ""}
-                            onChange={(e) => onInputChange(e, "phone", item.id)}
+                            value={inputState[item.type] || ""}
+                            onChange={(e) =>
+                                onInputChange(e, item.type, item.id)
+                            }
                             placeholder="Enter your phone"
                             disabled={submittedFields}
                         />
                         <button
-                            onClick={() => onInputSubmit("phone", item.id)}
-                            disabled={!inputState.phone || submittedFields}
+                            onClick={() => onInputSubmit(item.type, item.id)}
+                            disabled={!inputState[item.type] || submittedFields}
                         >
                             <IoMdSend
                                 style={{ fontSize: "x-large", display: "flex" }}
@@ -126,13 +133,15 @@ const ChatBubble = ({
                     <div className={styles.inputBubble}>
                         <input
                             type="date"
-                            value={inputState.date || ""}
-                            onChange={(e) => onInputChange(e, "date", item.id)}
+                            value={inputState[item.type] || ""}
+                            onChange={(e) =>
+                                onInputChange(e, item.type, item.id)
+                            }
                             disabled={submittedFields}
                         />
                         <button
-                            onClick={() => onInputSubmit("date", item.id)}
-                            disabled={!inputState.date || submittedFields}
+                            onClick={() => onInputSubmit(item.type, item.id)}
+                            disabled={!inputState[item.type] || submittedFields}
                         >
                             <IoMdSend
                                 style={{ fontSize: "x-large", display: "flex" }}
@@ -143,14 +152,16 @@ const ChatBubble = ({
             case "Input Rating":
                 return (
                     <div
-                        className={`${styles.inputBubble} ${submittedFields ? styles.disabled : ""}`}
+                        className={`${styles.inputBubble} ${
+                            submittedFields ? styles.disabled : ""
+                        }`}
                     >
                         <div>
                             {[1, 2, 3, 4, 5].map((rating) => (
                                 <span
                                     key={rating}
                                     className={
-                                        inputState.rating === rating
+                                        inputState[item.type] === rating
                                             ? styles.selectedRating
                                             : styles.rating
                                     }
@@ -158,7 +169,7 @@ const ChatBubble = ({
                                         !submittedFields &&
                                         onInputChange(
                                             { target: { value: rating } },
-                                            "rating",
+                                            item.type,
                                             item.id
                                         )
                                     }
@@ -168,8 +179,8 @@ const ChatBubble = ({
                             ))}
                         </div>
                         <button
-                            onClick={() => onInputSubmit("rating", item.id)}
-                            disabled={!inputState.rating || submittedFields}
+                            onClick={() => onInputSubmit(item.type, item.id)}
+                            disabled={!inputState[item.type] || submittedFields}
                         >
                             <IoMdSend
                                 style={{ fontSize: "x-large", display: "flex" }}
@@ -181,7 +192,7 @@ const ChatBubble = ({
                 return (
                     <div className={styles.inputBubble}>
                         <button
-                            onClick={() => onInputSubmit("button", item.id)}
+                            onClick={() => onInputSubmit(item.type, item.id)}
                             disabled={submittedFields}
                             className={styles.inputButton}
                         >
@@ -196,7 +207,11 @@ const ChatBubble = ({
 
     return (
         <div
-            className={`${styles.chatBubble} ${item.baseType.includes("Input") ? styles.userBubble : styles.botBubble}`}
+            className={`${styles.chatBubble} ${
+                item.baseType.includes("Input")
+                    ? styles.userBubble
+                    : styles.botBubble
+            }`}
         >
             {!item.baseType.includes("Input") && isLastBotMessage && (
                 <img

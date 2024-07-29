@@ -54,7 +54,7 @@ const ChatPage = () => {
             const fetchedTypeBot = await handleGetTypeBotById(decryptedId);
             setTypeBot(fetchedTypeBot);
             resetChat();
-            await handleIncrementViewCount(decryptedId); // Increment view count on mount
+            await handleIncrementViewCount(decryptedId);
         };
 
         fetchTypeBot();
@@ -77,9 +77,9 @@ const ChatPage = () => {
         const currentInputState = inputState[id] || {};
 
         if (
-            (inputType === "email" &&
+            (inputType.startsWith("Input Email") &&
                 !validateEmail(currentInputState[inputType])) ||
-            (inputType === "phone" &&
+            (inputType.startsWith("Input Phone") &&
                 !validatePhone(currentInputState[inputType]))
         ) {
             return;

@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 import FolderModal from "../../components/FolderModal/FolderModal";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
@@ -6,7 +7,6 @@ import NavbarWithDropdown from "../../components/NavbarWithDropdown/NavbarWithDr
 import { PiFolderSimplePlusBold } from "react-icons/pi";
 import { FiPlus } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
 import { encrypt } from "../../utils/encryptionUtils";
 
@@ -62,6 +62,11 @@ const Dashboard = () => {
         }
     };
 
+    const editTypeBot = (typeBotId) => {
+        const encryptedTypeBotId = encrypt(typeBotId);
+        navigate(`/create-typebot/${encodeURIComponent(encryptedTypeBotId)}`);
+    };
+
     return (
         <div className={styles.dashboard}>
             <NavbarWithDropdown />
@@ -110,11 +115,18 @@ const Dashboard = () => {
                         Create a typebot
                     </button>
                     {typeBots.map((typebot, index) => (
-                        <div key={index} className={styles.typebot}>
+                        <div
+                            key={index}
+                            className={styles.typebot}
+                            onClick={() => editTypeBot(typebot._id)}
+                        >
                             <span>{typebot.name}</span>
                             <RiDeleteBin6Line
                                 className={styles.deleteButton}
-                                onClick={() => handleDeleteTypeBot(typebot._id)}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteTypeBot(typebot._id);
+                                }}
                             />
                         </div>
                     ))}
