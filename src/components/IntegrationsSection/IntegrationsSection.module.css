@@ -20,3 +20,7 @@
     display: flex;
     justify-content: center;
 }
+
+.integrations img {
+    width: 100%;
+}

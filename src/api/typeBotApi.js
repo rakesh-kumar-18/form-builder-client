@@ -15,3 +15,4 @@ export const getUserTypeBots = () => axiosInstance.get("/user");
 export const getTypeBotsByFolder = (folderId) =>
     axiosInstance.get(`/folder/${folderId}`);
 export const getTypeBotById = (typeBotId) => axiosInstance.get(`/${typeBotId}`);
+export const updateTypeBot = (typeBotId, typeBotData) => axiosInstance.put(`/${typeBotId}`, typeBotData);
