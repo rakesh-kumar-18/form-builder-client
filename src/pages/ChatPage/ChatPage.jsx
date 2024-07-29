@@ -109,6 +109,13 @@ const ChatPage = () => {
         try {
             await handleAddResponse(interactionData);
 
+            // Check if this is the last flow item
+            if (currentFlowIndex === typeBot.flow.length - 1) {
+                // Increment the completion count
+                const decryptedId = decrypt(decodeURIComponent(id));
+                await handleIncrementCompletionCount(decryptedId);
+            }
+
             setSubmittedFields((prev) => ({ ...prev, [id]: true }));
             setCurrentFlowIndex((prevIndex) => prevIndex + 1);
         } catch (error) {
