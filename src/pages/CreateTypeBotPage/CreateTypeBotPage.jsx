@@ -74,12 +74,12 @@ const CreateTypeBotPage = () => {
                 setFlowItems(fetchedTypeBot.flow);
                 setSelectedTheme(fetchedTypeBot.theme);
                 setViews(fetchedResponse.viewCount);
-                setStarts(fetchedResponse.startCount);
+                setStarts(fetchedResponse.responses.length);
                 setCompletionRate(
-                    fetchedResponse.startCount
+                    fetchedResponse.responses.length
                         ? Math.round(
                               (fetchedResponse.completionCount /
-                                  fetchedResponse.startCount) *
+                                  fetchedResponse.responses.length) *
                                   100
                           )
                         : 0

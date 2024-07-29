@@ -13,7 +13,6 @@ const ChatPage = () => {
         handleGetTypeBotById,
         handleAddResponse,
         handleIncrementViewCount,
-        handleIncrementStartCount,
     } = useContext(FormBuilderContext);
     const [typeBot, setTypeBot] = useState(null);
     const [currentFlowIndex, setCurrentFlowIndex] = useState(0);
@@ -109,14 +108,6 @@ const ChatPage = () => {
 
         try {
             await handleAddResponse(interactionData);
-
-            // Increment start count on first interaction
-            if (!hasStarted) {
-                const decryptedId = decrypt(decodeURIComponent(id));
-                console.log("hi", decryptedId);
-                await handleIncrementStartCount(decryptedId);
-                setHasStarted(true);
-            }
 
             setSubmittedFields((prev) => ({ ...prev, [id]: true }));
             setCurrentFlowIndex((prevIndex) => prevIndex + 1);

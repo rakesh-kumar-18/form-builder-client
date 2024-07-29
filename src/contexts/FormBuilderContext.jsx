@@ -13,13 +13,12 @@ import {
     deleteTypeBot,
     getUserTypeBots,
     getTypeBotsByFolder,
-    getTypeBotById, // Import the new API call
+    getTypeBotById,
 } from "../api/typeBotApi";
 import {
     addResponse,
     getResponses,
     incrementViewCount,
-    incrementStartCount,
 } from "../api/responseApi";
 
 export const FormBuilderContext = createContext();
@@ -230,14 +229,6 @@ const FormBuilderContextProvider = ({ children }) => {
         }
     };
 
-    const handleIncrementStartCount = async (typeBotId) => {
-        try {
-            await incrementStartCount(typeBotId);
-        } catch (error) {
-            console.error("Error incrementing start count:", error);
-        }
-    };
-
     return (
         <FormBuilderContext.Provider
             value={{
@@ -265,7 +256,6 @@ const FormBuilderContextProvider = ({ children }) => {
                 fetchResponses,
                 handleAddResponse,
                 handleIncrementViewCount,
-                handleIncrementStartCount,
             }}
         >
             {children}
