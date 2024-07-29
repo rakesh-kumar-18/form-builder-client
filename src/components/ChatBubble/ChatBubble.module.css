@@ -57,6 +57,7 @@
 
 .inputBubble input:disabled {
     background-color: #767677;
+    color: #ffffff;
 }
 
 .inputBubble input,
@@ -67,8 +68,11 @@
 .inputBubble input {
     flex: 1;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 5px;
+    background-color: #ffffff;
+    color: #040404;
+    color-scheme: light;
 }
 
 .inputBubble button {

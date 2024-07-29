@@ -70,16 +70,17 @@ const CreateTypeBotPage = () => {
                 const decryptedId = decrypt(decodeURIComponent(id));
                 const fetchedTypeBot = await handleGetTypeBotById(decryptedId);
                 const fetchedResponse = await fetchResponses(decryptedId);
+                console.log(fetchedResponse);
                 setFormName(fetchedTypeBot.name);
                 setFlowItems(fetchedTypeBot.flow);
                 setSelectedTheme(fetchedTypeBot.theme);
                 setViews(fetchedResponse.viewCount);
                 setStarts(fetchedResponse.responses.length);
                 setCompletionRate(
-                    fetchedResponse.responses.length
+                    fetchedResponse.viewCount
                         ? Math.round(
                               (fetchedResponse.completionCount /
-                                  fetchedResponse.responses.length) *
+                                  fetchedResponse.viewCount) *
                                   100
                           )
                         : 0
@@ -560,15 +561,15 @@ const CreateTypeBotPage = () => {
                         <>
                             <div className={styles.analytics}>
                                 <div className={styles.card}>
-                                    <h4>Views</h4>
+                                    <h2>Views</h2>
                                     <p>{views}</p>
                                 </div>
                                 <div className={styles.card}>
-                                    <h4>Starts</h4>
+                                    <h2>Starts</h2>
                                     <p>{starts}</p>
                                 </div>
                                 <div className={styles.card}>
-                                    <h4>Completion Rate</h4>
+                                    <h2>Completion Rate</h2>
                                     <p>{completionRate}%</p>
                                 </div>
                             </div>
@@ -576,7 +577,10 @@ const CreateTypeBotPage = () => {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Submitted at</th>
+                                            <th></th>
+                                            <th>
+                                                <CiCalendarDate /> Submitted at
+                                            </th>
                                             {flowItems
                                                 .filter((item) =>
                                                     item.baseType.startsWith(
@@ -593,6 +597,8 @@ const CreateTypeBotPage = () => {
                                     <tbody>
                                         {responses.map((response, index) => (
                                             <tr key={index}>
+                                                <td>{index + 1}</td>{" "}
+                                                {/* Row number */}
                                                 <td>
                                                     {new Date(
                                                         response.submittedAt

@@ -340,20 +340,20 @@
 
 .analytics {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     width: 100%;
     margin-bottom: 20px;
 }
 
 .card {
-    background-color: #18181b;
+    background-color: #323232;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    width: 30%;
+    width: 15%;
 }
 
-.card h4 {
+.card h2 {
     margin: 0 0 10px 0;
 }
 
@@ -363,20 +363,20 @@
 }
 
 .responseTable {
-    width: 100%;
+    /* width: 100%; */
     overflow-x: auto;
+    overflow-y: auto;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #1f1f23;
 }
 
 th,
 td {
-    border: 1px solid #27272a;
-    padding: 8px 12px;
+    border: 2px solid #323232;
+    padding: 12px;
     text-align: left;
     color: #ffffff;
 }

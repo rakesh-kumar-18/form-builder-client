@@ -20,8 +20,6 @@ const ChatPage = () => {
     const [inputState, setInputState] = useState({});
     const [submittedFields, setSubmittedFields] = useState({});
     const [responseId, setResponseId] = useState(uuidv4());
-    const [hasStarted, setHasStarted] = useState(false);
-
     const hasIncrementedViewCount = useRef(false);
 
     const resetChat = useCallback(() => {
@@ -30,7 +28,6 @@ const ChatPage = () => {
         setInputState({});
         setSubmittedFields({});
         setResponseId(uuidv4());
-        setHasStarted(false);
     }, []);
 
     const displayNextFlowItem = useCallback(() => {
@@ -108,13 +105,6 @@ const ChatPage = () => {
 
         try {
             await handleAddResponse(interactionData);
-
-            // Check if this is the last flow item
-            if (currentFlowIndex === typeBot.flow.length - 1) {
-                // Increment the completion count
-                const decryptedId = decrypt(decodeURIComponent(id));
-                await handleIncrementCompletionCount(decryptedId);
-            }
 
             setSubmittedFields((prev) => ({ ...prev, [id]: true }));
             setCurrentFlowIndex((prevIndex) => prevIndex + 1);
