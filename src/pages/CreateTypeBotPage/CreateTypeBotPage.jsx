@@ -70,7 +70,6 @@ const CreateTypeBotPage = () => {
                 const decryptedId = decrypt(decodeURIComponent(id));
                 const fetchedTypeBot = await handleGetTypeBotById(decryptedId);
                 const fetchedResponse = await fetchResponses(decryptedId);
-                console.log(fetchedResponse);
                 setFormName(fetchedTypeBot.name);
                 setFlowItems(fetchedTypeBot.flow);
                 setSelectedTheme(fetchedTypeBot.theme);
