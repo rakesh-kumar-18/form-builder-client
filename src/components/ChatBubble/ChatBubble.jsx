@@ -11,7 +11,6 @@ const ChatBubble = ({
     submittedFields,
     isLastBotMessage,
 }) => {
-    console.log("Item", item);
     const renderBubbleContent = () => {
         switch (item.baseType) {
             case "Text":

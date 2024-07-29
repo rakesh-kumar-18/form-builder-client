@@ -69,17 +69,17 @@ const CreateTypeBotPage = () => {
             const fetchTypeBotData = async () => {
                 const decryptedId = decrypt(decodeURIComponent(id));
                 const fetchedTypeBot = await handleGetTypeBotById(decryptedId);
+                const fetchedResponse = await fetchResponses(decryptedId);
                 setFormName(fetchedTypeBot.name);
                 setFlowItems(fetchedTypeBot.flow);
                 setSelectedTheme(fetchedTypeBot.theme);
-                fetchResponses(decryptedId);
-                setViews(fetchedTypeBot.views);
-                setStarts(fetchedTypeBot.starts);
+                setViews(fetchedResponse.viewCount);
+                setStarts(fetchedResponse.startCount);
                 setCompletionRate(
-                    fetchedTypeBot.starts
+                    fetchedResponse.startCount
                         ? Math.round(
-                              (fetchedTypeBot.completions /
-                                  fetchedTypeBot.starts) *
+                              (fetchedResponse.completionCount /
+                                  fetchedResponse.startCount) *
                                   100
                           )
                         : 0

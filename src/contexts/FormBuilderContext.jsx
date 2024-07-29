@@ -55,17 +55,29 @@ const FormBuilderContextProvider = ({ children }) => {
         }
     }, []);
 
+    const fetchResponses = useCallback(async (typeBotId) => {
+        try {
+            const response = await getResponses(typeBotId);
+            setResponses(response.data.data.responses);
+            return response.data.data;
+        } catch (error) {
+            console.error("Error fetching responses:", error);
+        }
+    }, []);
+
     useEffect(() => {
         if (user) {
             setUsername(user.data.username);
             fetchUserFolders();
             fetchUserTypeBots();
+            fetchResponses();
         } else {
             setUsername("");
             setFolders([]);
             setTypeBots([]);
+            setResponses([]);
         }
-    }, [user, fetchUserFolders, fetchUserTypeBots]);
+    }, [user, fetchUserFolders, fetchUserTypeBots, fetchResponses]);
 
     const fetchUser = async () => {
         try {
@@ -223,15 +235,6 @@ const FormBuilderContextProvider = ({ children }) => {
             await incrementStartCount(typeBotId);
         } catch (error) {
             console.error("Error incrementing start count:", error);
-        }
-    };
-
-    const fetchResponses = async (typeBotId) => {
-        try {
-            const response = await getResponses(typeBotId);
-            setResponses(response.data.data.responses);
-        } catch (error) {
-            console.error("Error fetching responses:", error);
         }
     };
 

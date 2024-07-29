@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useCallback } from "react";
+import { useContext, useState, useEffect, useCallback, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
 import styles from "./ChatPage.module.css";
@@ -22,6 +22,8 @@ const ChatPage = () => {
     const [submittedFields, setSubmittedFields] = useState({});
     const [responseId, setResponseId] = useState(uuidv4());
     const [hasStarted, setHasStarted] = useState(false);
+
+    const hasIncrementedViewCount = useRef(false);
 
     const resetChat = useCallback(() => {
         setCurrentFlowIndex(0);
@@ -54,11 +56,22 @@ const ChatPage = () => {
             const fetchedTypeBot = await handleGetTypeBotById(decryptedId);
             setTypeBot(fetchedTypeBot);
             resetChat();
-            await handleIncrementViewCount(decryptedId);
         };
 
         fetchTypeBot();
-    }, [id, handleGetTypeBotById, resetChat, handleIncrementViewCount]);
+    }, [id, handleGetTypeBotById, resetChat]);
+
+    useEffect(() => {
+        if (!hasIncrementedViewCount.current) {
+            const incrementViewCount = async () => {
+                const decryptedId = decrypt(decodeURIComponent(id));
+                await handleIncrementViewCount(decryptedId);
+            };
+
+            incrementViewCount();
+            hasIncrementedViewCount.current = true;
+        }
+    }, [handleIncrementViewCount, id]);
 
     useEffect(() => {
         if (typeBot) {
@@ -88,9 +101,9 @@ const ChatPage = () => {
         const interactionData = {
             typeBotId: typeBot._id,
             responseId,
-            interactionId: id, // Use the current flow index or another unique identifier
+            interactionId: id,
             data: {
-                [inputType]: value || currentInputState[inputType], // For button input
+                [inputType]: value || currentInputState[inputType],
             },
         };
 
@@ -100,6 +113,7 @@ const ChatPage = () => {
             // Increment start count on first interaction
             if (!hasStarted) {
                 const decryptedId = decrypt(decodeURIComponent(id));
+                console.log("hi", decryptedId);
                 await handleIncrementStartCount(decryptedId);
                 setHasStarted(true);
             }
