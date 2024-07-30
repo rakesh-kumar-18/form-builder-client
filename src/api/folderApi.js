@@ -1,10 +1,10 @@
 import axios from "axios";
-// import conf from "../conf/conf";
+import conf from "../conf/conf";
 
-// const API_URL = `${conf.apiUrl}/api/v1/folders`;
+const API_URL = `${conf.apiUrl}/api/v1/folders`;
 
 const axiosInstance = axios.create({
-    // baseURL: API_URL,
+    baseURL: API_URL,
     withCredentials: true,
 });
 
