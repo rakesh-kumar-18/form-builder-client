@@ -16,6 +16,7 @@ import { LuCheckSquare } from "react-icons/lu";
 import { RxCross1 } from "react-icons/rx";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiFillFlag } from "react-icons/ai";
+import { TiTick } from "react-icons/ti";
 import dark from "../../assets/theme-dark.png";
 import light from "../../assets/theme-light.png";
 import tailblue from "../../assets/theme-tail-blue.png";
@@ -40,9 +41,12 @@ const CreateTypeBotPage = () => {
     const [views, setViews] = useState(0);
     const [starts, setStarts] = useState(0);
     const [completionRate, setCompletionRate] = useState(0);
+    const [isShareButtonEnabled, setIsShareButtonEnabled] = useState(false);
+    const [showCopyMessage, setShowCopyMessage] = useState(false);
 
     const {
         handleCreateTypeBot,
+        handleUpdateTypeBot,
         handleGetTypeBotById,
         responses,
         fetchResponses,
@@ -84,6 +88,8 @@ const CreateTypeBotPage = () => {
                           )
                         : 0
                 );
+                setSavedTypeBotId(decryptedId);
+                setIsShareButtonEnabled(true);
             };
             fetchTypeBotData();
         }
@@ -141,10 +147,16 @@ const CreateTypeBotPage = () => {
         };
 
         try {
-            const response = await handleCreateTypeBot(typeBotData);
-            if (response && response.data && response.data.data) {
-                setSavedTypeBotId(response.data.data._id);
-                toast.success("TypeBot saved successfully!");
+            if (savedTypeBotId) {
+                await handleUpdateTypeBot(savedTypeBotId, typeBotData);
+                toast.success("TypeBot updated successfully!");
+            } else {
+                const response = await handleCreateTypeBot(typeBotData);
+                if (response && response.data && response.data.data) {
+                    setSavedTypeBotId(response.data.data._id);
+                    setIsShareButtonEnabled(true);
+                    toast.success("TypeBot saved successfully!");
+                }
             }
         } catch (error) {
             console.error("Error saving TypeBot:", error);
@@ -157,7 +169,10 @@ const CreateTypeBotPage = () => {
             const encryptedId = encrypt(savedTypeBotId);
             const shareableLink = `${window.location.origin}/chat/${encodeURIComponent(encryptedId)}`;
             navigator.clipboard.writeText(shareableLink);
-            toast.success("Link copied to clipboard!");
+            setShowCopyMessage(true);
+            setTimeout(() => {
+                setShowCopyMessage(false);
+            }, 2000); // Show message for 2 seconds
         } else {
             toast.error("Please save the TypeBot before sharing.");
         }
@@ -294,6 +309,12 @@ const CreateTypeBotPage = () => {
                     <button
                         className={styles.shareButton}
                         onClick={shareTypeBot}
+                        disabled={!isShareButtonEnabled}
+                        style={{
+                            backgroundColor: isShareButtonEnabled
+                                ? "#1A5FFF"
+                                : "#848890",
+                        }}
                     >
                         Share
                     </button>
@@ -310,6 +331,20 @@ const CreateTypeBotPage = () => {
                     />
                 </div>
             </div>
+            {showCopyMessage && (
+                <div className={styles.copyMessage}>
+                    <span className={styles.copyText}>
+                        <TiTick
+                            style={{
+                                color: "#1A5FFF",
+                                fontSize: "larger",
+                                marginRight: "8px",
+                            }}
+                        />
+                        Link copied
+                    </span>
+                </div>
+            )}
             {activeTab === "flow" && (
                 <div className={styles.content}>
                     <div className={styles.sidebar}>
@@ -597,7 +632,6 @@ const CreateTypeBotPage = () => {
                                         {responses.map((response, index) => (
                                             <tr key={index}>
                                                 <td>{index + 1}</td>{" "}
-                                                {/* Row number */}
                                                 <td>
                                                     {new Date(
                                                         response.submittedAt

@@ -14,6 +14,7 @@ import {
     getUserTypeBots,
     getTypeBotsByFolder,
     getTypeBotById,
+    updateTypeBot,
 } from "../api/typeBotApi";
 import {
     addResponse,
@@ -172,10 +173,10 @@ const FormBuilderContextProvider = ({ children }) => {
             try {
                 const response = await createTypeBot(typeBotData);
                 fetchUserTypeBots();
-                return response; // Ensure to return the response
+                return response;
             } catch (error) {
                 console.error("Error creating typebot:", error);
-                throw error; // Ensure to throw the error so it can be caught in the component
+                throw error;
             }
         },
         [fetchUserTypeBots]
@@ -211,6 +212,19 @@ const FormBuilderContextProvider = ({ children }) => {
             throw error;
         }
     }, []);
+
+    const handleUpdateTypeBot = useCallback(
+        async (typeBotId, typeBotData) => {
+            try {
+                await updateTypeBot(typeBotId, typeBotData);
+                fetchUserTypeBots();
+            } catch (error) {
+                console.error("Error updating typebot:", error);
+                throw error;
+            }
+        },
+        [fetchUserTypeBots]
+    );
 
     const handleAddResponse = async (responseData) => {
         try {
@@ -252,6 +266,7 @@ const FormBuilderContextProvider = ({ children }) => {
                 fetchUserTypeBots,
                 handleGetTypeBotsByFolder,
                 handleGetTypeBotById,
+                handleUpdateTypeBot,
                 responses,
                 fetchResponses,
                 handleAddResponse,

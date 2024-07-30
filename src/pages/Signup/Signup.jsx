@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import styles from "./Signup.module.css";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import {
     validatePassword,
     validateEmail,
@@ -15,7 +14,7 @@ import ellipseRight from "../../assets/Ellipse 2.png";
 import { FaArrowLeft } from "react-icons/fa6";
 
 const Signup = () => {
-    const { register } = useContext(FormBuilderContext);
+    const { register, login } = useContext(FormBuilderContext);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: "",
@@ -56,7 +55,7 @@ const Signup = () => {
             formErrors.password = "Password is required";
         } else if (!validatePassword(password)) {
             formErrors.password =
-                "Password must be at least 8 characters long and contain a mix of letters, numbers, and symbols.";
+                "Password must be at least 6 characters long and contain a mix of letters, numbers, and symbols.";
         }
 
         if (!confirmPassword) {
@@ -72,18 +71,25 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
+            setLoading(true);
             try {
                 const { username, email, password, confirmPassword } = formData;
                 await register({ username, email, password, confirmPassword });
                 toast.success("User registered successfully");
+
+                // Automatically log in the registered user
+                await login({ email, password });
+                toast.success("Login successful");
+                navigate("/dashboard");
             } catch (error) {
                 toast.error(
                     error.response?.data?.message || "Registration failed"
                 );
                 console.log(error);
+            } finally {
+                setLoading(false);
             }
         }
-        setLoading(false);
     };
 
     return (

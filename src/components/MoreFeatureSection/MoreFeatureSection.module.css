@@ -56,12 +56,6 @@
     transform: translateX(-50%);
 }
 
-/* .teams {
-    background: linear-gradient(180deg, #171923 0%, #1A202C 100%);
-    width: 100%;
-    margin: 0;
-} */
-
 .teams > h3 {
     color: #ffffffeb;
     margin-bottom: 3rem;

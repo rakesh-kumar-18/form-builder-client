@@ -1,5 +1,5 @@
 import styles from "./Header.module.css";
-import logo from "../../assets/logo.png"; // Update with the actual path to your logo
+import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 
 const Header = () => {

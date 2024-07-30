@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import styles from "./Login.module.css";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { validateEmail } from "../../utils/validation";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -55,8 +54,8 @@ const Login = () => {
                 const { email, password } = formData;
                 const response = await login({ email, password });
                 if (response.data) {
-                    toast.success("Login successful");
                     navigate("/dashboard");
+                    toast.success("Login successful");
                 } else {
                     toast.error("Login failed. Please check your credentials.");
                 }

@@ -2,8 +2,8 @@ import styles from "./HeroSection.module.css";
 import heroImage from "../../assets/hero-image.png";
 import leftShape from "../../assets/home-triangle.png";
 import rightShape from "../../assets/svg-right.png";
-import backgroundBlur from '../../assets/background-blur.png';
-import backgroundBlurBlue from '../../assets/background-blur-blue.png';
+import backgroundBlur from "../../assets/background-blur.png";
+import backgroundBlurBlue from "../../assets/background-blur-blue.png";
 import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
@@ -40,8 +40,16 @@ const HeroSection = () => {
                 className={styles.rightShape}
             />
             <div className={styles.images}>
-                <img src={backgroundBlur} alt="Background Blur" className={styles.backgroundImages} />
-                <img src={backgroundBlurBlue} alt="Background Blur Blue" className={styles.backgroundImages} />
+                <img
+                    src={backgroundBlur}
+                    alt="Background Blur"
+                    className={styles.backgroundImages}
+                />
+                <img
+                    src={backgroundBlurBlue}
+                    alt="Background Blur Blue"
+                    className={styles.backgroundImages}
+                />
                 <img src={heroImage} alt="Hero" className={styles.heroImage} />
             </div>
         </section>

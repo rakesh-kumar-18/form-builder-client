@@ -8,7 +8,6 @@
     justify-content: flex-start;
     max-width: 60%;
     margin-left: 50px;
-    /* Same margin as profile image width plus some spacing */
     position: relative;
 }
 
@@ -24,7 +23,6 @@
     border-radius: 50%;
     position: absolute;
     left: -50px;
-    /* Adjust to position the image outside the bubble */
 }
 
 .textBubble,
@@ -52,7 +50,6 @@
 .inputBubble {
     display: flex;
     align-items: center;
-    /* max-width: 60%; */
 }
 
 .inputBubble input:disabled {
@@ -73,6 +70,7 @@
     background-color: #ffffff;
     color: #040404;
     color-scheme: light;
+    box-shadow: 0px 4px 6.3px 0px #00000040;
 }
 
 .inputBubble button {

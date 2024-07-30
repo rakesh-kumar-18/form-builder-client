@@ -12,6 +12,7 @@ import PrivateRoute from "./PrivateRoute.jsx";
 import CreateTypeBotPage from "./pages/CreateTypeBotPage/CreateTypeBotPage.jsx";
 import ChatPage from "./pages/ChatPage/ChatPage.jsx";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
     {

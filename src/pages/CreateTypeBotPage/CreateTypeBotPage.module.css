@@ -228,7 +228,6 @@
     display: flex;
     height: calc(100% - 60px);
     overflow-y: hidden;
-    /* Prevent scroll on the theme content */
 }
 
 .themeSidebar {
@@ -241,7 +240,6 @@
     align-items: center;
     height: 100%;
     overflow-y: auto;
-    /* Allow scrolling if necessary */
 }
 
 .themeSidebar h3 {
@@ -390,4 +388,23 @@ th {
     color: #69696973;
     font-size: xx-large;
     height: calc(100vh - 100px);
+}
+
+.copyMessage {
+    position: absolute;
+    top: 5rem;
+    right: 7rem;
+    background-color: #18181b;
+    color: #ffffffeb;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #3d3d3f;
+}
+
+.copyText {
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
