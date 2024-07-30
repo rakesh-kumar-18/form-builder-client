@@ -203,7 +203,7 @@ const Signup = () => {
                         className={styles.signupButton}
                         disabled={loading}
                     >
-                        Sign Up
+                        {loading ? "Signing Up..." : "Sign Up"}
                     </button>
                 </form>
                 <p>
