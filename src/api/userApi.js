@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 });
 
 export const registerUser = (userData) =>
-    axiosInstance.post("/register", userData);
+    axiosInstance.post("api/v1/users/register", userData);
 export const loginUser = (userData) => axiosInstance.post("/login", userData);
 export const logoutUser = () => axiosInstance.post("/logout");
 export const getCurrentUser = () => axiosInstance.get("/current-user");
