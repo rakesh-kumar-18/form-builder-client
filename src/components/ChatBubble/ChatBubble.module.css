@@ -35,16 +35,13 @@
     color: black;
 }
 
-.imageBubble {
-    max-width: 100%;
-}
-
-.videoBubble {
-    max-width: 100%;
-}
-
+.imageBubble,
+.videoBubble,
 .gifBubble {
     max-width: 100%;
+    max-height: 400px;
+    width: auto;
+    height: auto;
 }
 
 .inputBubble {
@@ -133,6 +130,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     font-size: small;
 }

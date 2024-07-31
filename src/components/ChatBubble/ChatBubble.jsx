@@ -37,14 +37,34 @@ const ChatBubble = ({
                         className={styles.imageBubble}
                     />
                 );
-            case "Video":
-                return (
-                    <video
-                        src={item.text}
-                        controls
-                        className={styles.videoBubble}
-                    />
-                );
+            case "Video": {
+                const isYouTubeLink =
+                    item.text.includes("youtube.com") ||
+                    item.text.includes("youtu.be");
+                if (isYouTubeLink) {
+                    const videoId =
+                        item.text.split("v=")[1] || item.text.split("/").pop();
+                    return (
+                        <iframe
+                            width="560"
+                            height="315"
+                            src={`https://www.youtube.com/embed/${videoId}`}
+                            style={{ border: "none" }}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className={styles.videoBubble}
+                        ></iframe>
+                    );
+                } else {
+                    return (
+                        <video
+                            src={item.text}
+                            controls
+                            className={styles.videoBubble}
+                        />
+                    );
+                }
+            }
             case "GIF":
                 return (
                     <img
@@ -64,7 +84,7 @@ const ChatBubble = ({
                             }
                             placeholder="Enter your text"
                             disabled={submittedFields || isLoading}
-                            onKeyPress={(e) =>
+                            onKeyDown={(e) =>
                                 handleKeyPress(e, item.type, item.id)
                             }
                         />
@@ -100,7 +120,7 @@ const ChatBubble = ({
                             }
                             placeholder="Enter your number"
                             disabled={submittedFields || isLoading}
-                            onKeyPress={(e) =>
+                            onKeyDown={(e) =>
                                 handleKeyPress(e, item.type, item.id)
                             }
                         />
@@ -136,7 +156,7 @@ const ChatBubble = ({
                             }
                             placeholder="Enter your email"
                             disabled={submittedFields || isLoading}
-                            onKeyPress={(e) =>
+                            onKeyDown={(e) =>
                                 handleKeyPress(e, item.type, item.id)
                             }
                         />
@@ -172,7 +192,7 @@ const ChatBubble = ({
                             }
                             placeholder="Enter your phone"
                             disabled={submittedFields || isLoading}
-                            onKeyPress={(e) =>
+                            onKeyDown={(e) =>
                                 handleKeyPress(e, item.type, item.id)
                             }
                         />
@@ -207,7 +227,7 @@ const ChatBubble = ({
                                 onInputChange(e, item.type, item.id)
                             }
                             disabled={submittedFields || isLoading}
-                            onKeyPress={(e) =>
+                            onKeyDown={(e) =>
                                 handleKeyPress(e, item.type, item.id)
                             }
                         />

@@ -104,7 +104,7 @@ const CreateTypeBotPage = () => {
                 );
             };
 
-            fetchResponsesData(); // Initial fetch
+            fetchResponsesData();
 
             intervalId = setInterval(fetchResponsesData, POLLING_INTERVAL);
 
