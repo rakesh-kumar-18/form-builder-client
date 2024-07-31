@@ -25,6 +25,8 @@ import dot from "../../assets/dot.png";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
 import { decrypt, encrypt } from "../../utils/encryptionUtils";
 
+const POLLING_INTERVAL = 5000;
+
 const CreateTypeBotPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -43,6 +45,7 @@ const CreateTypeBotPage = () => {
     const [completionRate, setCompletionRate] = useState(0);
     const [isShareButtonEnabled, setIsShareButtonEnabled] = useState(false);
     const [showCopyMessage, setShowCopyMessage] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     const {
         handleCreateTypeBot,
@@ -73,10 +76,21 @@ const CreateTypeBotPage = () => {
             const fetchTypeBotData = async () => {
                 const decryptedId = decrypt(decodeURIComponent(id));
                 const fetchedTypeBot = await handleGetTypeBotById(decryptedId);
-                const fetchedResponse = await fetchResponses(decryptedId);
                 setFormName(fetchedTypeBot.name);
                 setFlowItems(fetchedTypeBot.flow);
                 setSelectedTheme(fetchedTypeBot.theme);
+                setSavedTypeBotId(decryptedId);
+                setIsShareButtonEnabled(true);
+            };
+            fetchTypeBotData();
+        }
+    }, [id, handleGetTypeBotById]);
+
+    useEffect(() => {
+        let intervalId;
+        if (activeTab === "response" && savedTypeBotId) {
+            const fetchResponsesData = async () => {
+                const fetchedResponse = await fetchResponses(savedTypeBotId);
                 setViews(fetchedResponse.viewCount);
                 setStarts(fetchedResponse.responses.length);
                 setCompletionRate(
@@ -88,12 +102,15 @@ const CreateTypeBotPage = () => {
                           )
                         : 0
                 );
-                setSavedTypeBotId(decryptedId);
-                setIsShareButtonEnabled(true);
             };
-            fetchTypeBotData();
+
+            fetchResponsesData(); // Initial fetch
+
+            intervalId = setInterval(fetchResponsesData, POLLING_INTERVAL);
+
+            return () => clearInterval(intervalId);
         }
-    }, [id, handleGetTypeBotById, fetchResponses]);
+    }, [activeTab, savedTypeBotId, fetchResponses]);
 
     const themes = [
         { id: "light", name: "Light", image: `${light}` },
@@ -146,6 +163,7 @@ const CreateTypeBotPage = () => {
             folderId,
         };
 
+        setIsSaving(true);
         try {
             if (savedTypeBotId) {
                 await handleUpdateTypeBot(savedTypeBotId, typeBotData);
@@ -161,6 +179,8 @@ const CreateTypeBotPage = () => {
         } catch (error) {
             console.error("Error saving TypeBot:", error);
             toast.error("Failed to save TypeBot.");
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -172,7 +192,7 @@ const CreateTypeBotPage = () => {
             setShowCopyMessage(true);
             setTimeout(() => {
                 setShowCopyMessage(false);
-            }, 2000); // Show message for 2 seconds
+            }, 2000);
         } else {
             toast.error("Please save the TypeBot before sharing.");
         }
@@ -224,7 +244,9 @@ const CreateTypeBotPage = () => {
                             const newCount = parseInt(count, 10);
                             return {
                                 ...item,
-                                type: `${type} ${newCount > 1 ? newCount - 1 : newCount}`,
+                                type: `${type} ${
+                                    newCount > 1 ? newCount - 1 : newCount
+                                }`,
                             };
                         }
                         return item;
@@ -256,6 +278,11 @@ const CreateTypeBotPage = () => {
         if (e.target.value.trim()) {
             setFormNameError("");
         }
+    };
+
+    const handleNavigate = () => {
+        setSavedTypeBotId(null);
+        navigate("/dashboard");
     };
 
     return (
@@ -318,8 +345,15 @@ const CreateTypeBotPage = () => {
                     >
                         Share
                     </button>
-                    <button className={styles.saveButton} onClick={saveTypeBot}>
-                        Save
+                    <button
+                        className={styles.saveButton}
+                        onClick={saveTypeBot}
+                        disabled={isSaving}
+                        style={{
+                            cursor: isSaving ? "not-allowed" : "pointer",
+                        }}
+                    >
+                        {isSaving ? "Saving..." : "Save"}
                     </button>
                     <RxCross1
                         style={{
@@ -327,7 +361,7 @@ const CreateTypeBotPage = () => {
                             fontSize: "large",
                             cursor: "pointer",
                         }}
-                        onClick={() => navigate("/dashboard")}
+                        onClick={handleNavigate}
                     />
                 </div>
             </div>
@@ -591,7 +625,7 @@ const CreateTypeBotPage = () => {
             )}
             {activeTab === "response" && (
                 <div className={styles.responseContent}>
-                    {responses.length > 0 ? (
+                    {views > 0 ? (
                         <>
                             <div className={styles.analytics}>
                                 <div className={styles.card}>
@@ -607,73 +641,86 @@ const CreateTypeBotPage = () => {
                                     <p>{completionRate}%</p>
                                 </div>
                             </div>
-                            <div className={styles.responseTable}>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>
-                                                <CiCalendarDate /> Submitted at
-                                            </th>
-                                            {flowItems
-                                                .filter((item) =>
-                                                    item.baseType.startsWith(
-                                                        "Input"
-                                                    )
-                                                )
-                                                .map((item, index) => (
-                                                    <th key={index}>
-                                                        {item.type}
-                                                    </th>
-                                                ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {responses.map((response, index) => (
-                                            <tr key={index}>
-                                                <td>{index + 1}</td>{" "}
-                                                <td>
-                                                    {new Date(
-                                                        response.submittedAt
-                                                    ).toLocaleDateString(
-                                                        "en-US",
-                                                        {
-                                                            month: "short",
-                                                            day: "numeric",
-                                                        }
-                                                    )}
-                                                    ,{" "}
-                                                    {new Date(
-                                                        response.submittedAt
-                                                    ).toLocaleTimeString(
-                                                        "en-US",
-                                                        {
-                                                            hour: "numeric",
-                                                            minute: "numeric",
-                                                            hour12: true,
-                                                        }
-                                                    )}
-                                                </td>
+                            {responses.length > 0 && (
+                                <div className={styles.responseTable}>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>
+                                                    <CiCalendarDate /> Submitted
+                                                    at
+                                                </th>
                                                 {flowItems
                                                     .filter((item) =>
-                                                        item.type.startsWith(
+                                                        item.baseType.startsWith(
                                                             "Input"
                                                         )
                                                     )
-                                                    .map((item, idx) => (
-                                                        <td key={idx}>
-                                                            {
-                                                                response.data[
-                                                                    item.type
-                                                                ]
-                                                            }
-                                                        </td>
+                                                    .map((item, index) => (
+                                                        <th key={index}>
+                                                            {item.type}
+                                                        </th>
                                                     ))}
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            {responses.map(
+                                                (response, index) => (
+                                                    <tr key={index}>
+                                                        <td>{index + 1}</td>{" "}
+                                                        <td>
+                                                            {new Date(
+                                                                response.submittedAt
+                                                            ).toLocaleDateString(
+                                                                "en-US",
+                                                                {
+                                                                    month: "short",
+                                                                    day: "numeric",
+                                                                }
+                                                            )}
+                                                            ,{" "}
+                                                            {new Date(
+                                                                response.submittedAt
+                                                            ).toLocaleTimeString(
+                                                                "en-US",
+                                                                {
+                                                                    hour: "numeric",
+                                                                    minute: "numeric",
+                                                                    hour12: true,
+                                                                }
+                                                            )}
+                                                        </td>
+                                                        {flowItems
+                                                            .filter((item) =>
+                                                                item.type.startsWith(
+                                                                    "Input"
+                                                                )
+                                                            )
+                                                            .map(
+                                                                (item, idx) => (
+                                                                    <td
+                                                                        key={
+                                                                            idx
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            response
+                                                                                .data[
+                                                                                item
+                                                                                    .type
+                                                                            ]
+                                                                        }
+                                                                    </td>
+                                                                )
+                                                            )}
+                                                    </tr>
+                                                )
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
                         </>
                     ) : (
                         <div className={styles.noData}>

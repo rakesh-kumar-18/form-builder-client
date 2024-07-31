@@ -2,6 +2,7 @@
 import styles from "./ChatBubble.module.css";
 import profileImage from "../../assets/profile.png";
 import { IoMdSend } from "react-icons/io";
+import { useState } from "react";
 
 const ChatBubble = ({
     item,
@@ -11,6 +12,19 @@ const ChatBubble = ({
     submittedFields,
     isLastBotMessage,
 }) => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = (type, id) => {
+        setIsLoading(true);
+        onInputSubmit(type, id).finally(() => setIsLoading(false));
+    };
+
+    const handleKeyPress = (e, type, id) => {
+        if (e.key === "Enter" && !isLoading && inputState[type]) {
+            handleSubmit(type, id);
+        }
+    };
+
     const renderBubbleContent = () => {
         switch (item.baseType) {
             case "Text":
@@ -49,15 +63,29 @@ const ChatBubble = ({
                                 onInputChange(e, item.type, item.id)
                             }
                             placeholder="Enter your text"
-                            disabled={submittedFields}
+                            disabled={submittedFields || isLoading}
+                            onKeyPress={(e) =>
+                                handleKeyPress(e, item.type, item.id)
+                            }
                         />
                         <button
-                            onClick={() => onInputSubmit(item.type, item.id)}
-                            disabled={!inputState[item.type] || submittedFields}
+                            onClick={() => handleSubmit(item.type, item.id)}
+                            disabled={
+                                !inputState[item.type] ||
+                                submittedFields ||
+                                isLoading
+                            }
                         >
-                            <IoMdSend
-                                style={{ fontSize: "x-large", display: "flex" }}
-                            />
+                            {isLoading ? (
+                                "..."
+                            ) : (
+                                <IoMdSend
+                                    style={{
+                                        fontSize: "x-large",
+                                        display: "flex",
+                                    }}
+                                />
+                            )}
                         </button>
                     </div>
                 );
@@ -71,15 +99,29 @@ const ChatBubble = ({
                                 onInputChange(e, item.type, item.id)
                             }
                             placeholder="Enter your number"
-                            disabled={submittedFields}
+                            disabled={submittedFields || isLoading}
+                            onKeyPress={(e) =>
+                                handleKeyPress(e, item.type, item.id)
+                            }
                         />
                         <button
-                            onClick={() => onInputSubmit(item.type, item.id)}
-                            disabled={!inputState[item.type] || submittedFields}
+                            onClick={() => handleSubmit(item.type, item.id)}
+                            disabled={
+                                !inputState[item.type] ||
+                                submittedFields ||
+                                isLoading
+                            }
                         >
-                            <IoMdSend
-                                style={{ fontSize: "x-large", display: "flex" }}
-                            />
+                            {isLoading ? (
+                                "..."
+                            ) : (
+                                <IoMdSend
+                                    style={{
+                                        fontSize: "x-large",
+                                        display: "flex",
+                                    }}
+                                />
+                            )}
                         </button>
                     </div>
                 );
@@ -93,15 +135,29 @@ const ChatBubble = ({
                                 onInputChange(e, item.type, item.id)
                             }
                             placeholder="Enter your email"
-                            disabled={submittedFields}
+                            disabled={submittedFields || isLoading}
+                            onKeyPress={(e) =>
+                                handleKeyPress(e, item.type, item.id)
+                            }
                         />
                         <button
-                            onClick={() => onInputSubmit(item.type, item.id)}
-                            disabled={!inputState[item.type] || submittedFields}
+                            onClick={() => handleSubmit(item.type, item.id)}
+                            disabled={
+                                !inputState[item.type] ||
+                                submittedFields ||
+                                isLoading
+                            }
                         >
-                            <IoMdSend
-                                style={{ fontSize: "x-large", display: "flex" }}
-                            />
+                            {isLoading ? (
+                                "..."
+                            ) : (
+                                <IoMdSend
+                                    style={{
+                                        fontSize: "x-large",
+                                        display: "flex",
+                                    }}
+                                />
+                            )}
                         </button>
                     </div>
                 );
@@ -115,15 +171,29 @@ const ChatBubble = ({
                                 onInputChange(e, item.type, item.id)
                             }
                             placeholder="Enter your phone"
-                            disabled={submittedFields}
+                            disabled={submittedFields || isLoading}
+                            onKeyPress={(e) =>
+                                handleKeyPress(e, item.type, item.id)
+                            }
                         />
                         <button
-                            onClick={() => onInputSubmit(item.type, item.id)}
-                            disabled={!inputState[item.type] || submittedFields}
+                            onClick={() => handleSubmit(item.type, item.id)}
+                            disabled={
+                                !inputState[item.type] ||
+                                submittedFields ||
+                                isLoading
+                            }
                         >
-                            <IoMdSend
-                                style={{ fontSize: "x-large", display: "flex" }}
-                            />
+                            {isLoading ? (
+                                "..."
+                            ) : (
+                                <IoMdSend
+                                    style={{
+                                        fontSize: "x-large",
+                                        display: "flex",
+                                    }}
+                                />
+                            )}
                         </button>
                     </div>
                 );
@@ -136,15 +206,29 @@ const ChatBubble = ({
                             onChange={(e) =>
                                 onInputChange(e, item.type, item.id)
                             }
-                            disabled={submittedFields}
+                            disabled={submittedFields || isLoading}
+                            onKeyPress={(e) =>
+                                handleKeyPress(e, item.type, item.id)
+                            }
                         />
                         <button
-                            onClick={() => onInputSubmit(item.type, item.id)}
-                            disabled={!inputState[item.type] || submittedFields}
+                            onClick={() => handleSubmit(item.type, item.id)}
+                            disabled={
+                                !inputState[item.type] ||
+                                submittedFields ||
+                                isLoading
+                            }
                         >
-                            <IoMdSend
-                                style={{ fontSize: "x-large", display: "flex" }}
-                            />
+                            {isLoading ? (
+                                "..."
+                            ) : (
+                                <IoMdSend
+                                    style={{
+                                        fontSize: "x-large",
+                                        display: "flex",
+                                    }}
+                                />
+                            )}
                         </button>
                     </div>
                 );
@@ -178,12 +262,23 @@ const ChatBubble = ({
                             ))}
                         </div>
                         <button
-                            onClick={() => onInputSubmit(item.type, item.id)}
-                            disabled={!inputState[item.type] || submittedFields}
+                            onClick={() => handleSubmit(item.type, item.id)}
+                            disabled={
+                                !inputState[item.type] ||
+                                submittedFields ||
+                                isLoading
+                            }
                         >
-                            <IoMdSend
-                                style={{ fontSize: "x-large", display: "flex" }}
-                            />
+                            {isLoading ? (
+                                "..."
+                            ) : (
+                                <IoMdSend
+                                    style={{
+                                        fontSize: "x-large",
+                                        display: "flex",
+                                    }}
+                                />
+                            )}
                         </button>
                     </div>
                 );
@@ -191,11 +286,11 @@ const ChatBubble = ({
                 return (
                     <div className={styles.inputBubble}>
                         <button
-                            onClick={() => onInputSubmit(item.type, item.id)}
-                            disabled={submittedFields}
+                            onClick={() => handleSubmit(item.type, item.id)}
+                            disabled={submittedFields || isLoading}
                             className={styles.inputButton}
                         >
-                            {item.text}
+                            {isLoading ? "..." : item.text}
                         </button>
                     </div>
                 );
