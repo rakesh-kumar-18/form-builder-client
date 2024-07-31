@@ -24,6 +24,7 @@ import profileImage from "../../assets/profile.png";
 import dot from "../../assets/dot.png";
 import { FormBuilderContext } from "../../contexts/FormBuilderContext";
 import { decrypt, encrypt } from "../../utils/encryptionUtils";
+import { v4 as uuidv4 } from "uuid";
 
 const POLLING_INTERVAL = 5000;
 
@@ -135,7 +136,7 @@ const CreateTypeBotPage = () => {
                 ) &&
                 !item.text
             ) {
-                newErrors[item.id] = true;
+                newErrors[item.uuid] = true;
             }
         });
 
@@ -150,11 +151,14 @@ const CreateTypeBotPage = () => {
             return;
         }
 
-        const filteredFlowItems = flowItems.map(({ baseType, type, text }) => ({
-            baseType,
-            type,
-            text,
-        }));
+        const filteredFlowItems = flowItems.map(
+            ({ baseType, type, text, uuid }) => ({
+                baseType,
+                type,
+                text,
+                uuid,
+            })
+        );
 
         const typeBotData = {
             name: formName,
@@ -187,7 +191,9 @@ const CreateTypeBotPage = () => {
     const shareTypeBot = () => {
         if (savedTypeBotId) {
             const encryptedId = encrypt(savedTypeBotId);
-            const shareableLink = `${window.location.origin}/chat/${encodeURIComponent(encryptedId)}`;
+            const shareableLink = `${window.location.origin}/chat/${encodeURIComponent(
+                encryptedId
+            )}`;
             navigator.clipboard.writeText(shareableLink);
             setShowCopyMessage(true);
             setTimeout(() => {
@@ -208,7 +214,7 @@ const CreateTypeBotPage = () => {
             }
 
             const newFlowItem = {
-                id: Date.now(),
+                uuid: uuidv4(),
                 type: `${type} ${newCounts[type]}`,
                 baseType: type,
                 icon,
@@ -220,8 +226,8 @@ const CreateTypeBotPage = () => {
         });
     };
 
-    const deleteFlowItem = (id) => {
-        const itemType = flowItems.find((item) => item.id === id)?.baseType;
+    const deleteFlowItem = (uuid) => {
+        const itemType = flowItems.find((item) => item.uuid === uuid)?.baseType;
         if (itemType) {
             setItemCounts((prevCounts) => {
                 const newCounts = { ...prevCounts };
@@ -233,7 +239,7 @@ const CreateTypeBotPage = () => {
 
             setFlowItems((prevItems) => {
                 const updatedItems = prevItems
-                    .filter((item) => item.id !== id)
+                    .filter((item) => item.uuid !== uuid)
                     .map((item) => {
                         if (item.baseType === itemType) {
                             const lastSpaceIndex = item.type.lastIndexOf(" ");
@@ -257,18 +263,20 @@ const CreateTypeBotPage = () => {
 
         setErrors((prevErrors) => {
             const newErrors = { ...prevErrors };
-            delete newErrors[id];
+            delete newErrors[uuid];
             return newErrors;
         });
     };
 
-    const updateFlowItemText = (id, text) => {
+    const updateFlowItemText = (uuid, text) => {
         setFlowItems(
-            flowItems.map((item) => (item.id === id ? { ...item, text } : item))
+            flowItems.map((item) =>
+                item.uuid === uuid ? { ...item, text } : item
+            )
         );
         setErrors((prevErrors) => {
             const newErrors = { ...prevErrors };
-            delete newErrors[id];
+            delete newErrors[uuid];
             return newErrors;
         });
     };
@@ -505,7 +513,7 @@ const CreateTypeBotPage = () => {
                             <h4>Start</h4>
                         </div>
                         {flowItems.map((item) => (
-                            <div key={item.id} className={styles.flowItem}>
+                            <div key={item.uuid} className={styles.flowItem}>
                                 <div className={styles.flowDetails}>
                                     <h4>{item.type}</h4>
                                     {[
@@ -518,7 +526,7 @@ const CreateTypeBotPage = () => {
                                         <>
                                             <div
                                                 className={`${styles.inputContainer} ${
-                                                    errors[item.id]
+                                                    errors[item.uuid]
                                                         ? styles.errorInput
                                                         : ""
                                                 }`}
@@ -531,13 +539,13 @@ const CreateTypeBotPage = () => {
                                                     value={item.text}
                                                     onChange={(e) =>
                                                         updateFlowItemText(
-                                                            item.id,
+                                                            item.uuid,
                                                             e.target.value
                                                         )
                                                     }
                                                 />
                                             </div>
-                                            {errors[item.id] && (
+                                            {errors[item.uuid] && (
                                                 <span
                                                     className={styles.errorText}
                                                 >
@@ -563,7 +571,7 @@ const CreateTypeBotPage = () => {
                                 </div>
                                 <RiDeleteBin6Line
                                     className={styles.deleteIcon}
-                                    onClick={() => deleteFlowItem(item.id)}
+                                    onClick={() => deleteFlowItem(item.uuid)}
                                 />
                             </div>
                         ))}
