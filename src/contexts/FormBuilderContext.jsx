@@ -35,7 +35,7 @@ const FormBuilderContextProvider = ({ children }) => {
 
     useEffect(() => {
         fetchUser();
-    }, [username]);
+    }, []);
 
     const fetchUserFolders = useCallback(async () => {
         try {
@@ -82,7 +82,6 @@ const FormBuilderContextProvider = ({ children }) => {
     const fetchUser = async () => {
         try {
             const response = await getCurrentUser();
-            console.log("hey", response);
             if (response && response.data) {
                 setUser(response.data);
             }
