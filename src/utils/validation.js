@@ -10,6 +10,6 @@ export const validateEmail = (email) => {
 };
 
 export const validateUsername = (username) => {
-    const regex = /^[a-zA-Z0-9]{3,}$/;
+    const regex = /^[a-zA-Z0-9\s]{3,}$/;
     return regex.test(username);
 };
