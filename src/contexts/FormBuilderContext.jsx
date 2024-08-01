@@ -82,6 +82,7 @@ const FormBuilderContextProvider = ({ children }) => {
     const fetchUser = async () => {
         try {
             const response = await getCurrentUser();
+            console.log("hey", response);
             if (response && response.data) {
                 setUser(response.data);
             }
