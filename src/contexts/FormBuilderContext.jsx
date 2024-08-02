@@ -35,7 +35,7 @@ const FormBuilderContextProvider = ({ children }) => {
 
     useEffect(() => {
         fetchUser();
-    }, []);
+    }, [username]);
 
     const fetchUserFolders = useCallback(async () => {
         try {
