@@ -55,7 +55,7 @@ const Signup = () => {
             formErrors.password = "Password is required";
         } else if (!validatePassword(password)) {
             formErrors.password =
-                "Password must be at least 6 characters long and contain a mix of letters, numbers, and symbols.";
+                "Password must be at least 6 characters long.";
         }
 
         if (!confirmPassword) {
